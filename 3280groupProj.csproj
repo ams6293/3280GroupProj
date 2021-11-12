@@ -55,6 +55,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="InvoicesDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InvoicesDataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Main\clsMainLogic.cs" />
     <Compile Include="Items\Item.xaml.cs">
       <DependentUpon>Item.xaml</DependentUpon>
@@ -102,6 +107,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="InvoicesDataSet1.xsc">
+      <DependentUpon>InvoicesDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="InvoicesDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>InvoicesDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="InvoicesDataSet1.xss">
+      <DependentUpon>InvoicesDataSet1.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

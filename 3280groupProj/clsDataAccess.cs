@@ -19,8 +19,8 @@ using System.Reflection;
         /// </summary>
 		public clsDataAccess()
 		{
-            sConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data source= " + Directory.GetCurrentDirectory() + "\\Invoices.accdb";
-		}
+             sConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Directory.GetCurrentDirectory() + "\\Invoice.accdb";
+        }
 
         /// <summary>
         /// This method takes an SQL statment that is passed in and executes it.  The resulting values

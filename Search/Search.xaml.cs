@@ -19,9 +19,11 @@ namespace _3280groupProj
     /// </summary>
     public partial class Search : Window
     {
+        clsSearchLogic searchLogic = new clsSearchLogic();
         public Search()
         {
             InitializeComponent();
+            dgInvoices.ItemsSource = searchLogic.getInvoices();
         }
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _3280groupProj.Search
+namespace _3280groupProj
 {
     class clsSearchSQL
     {

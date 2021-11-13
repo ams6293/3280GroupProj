@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Search" Height="450" Width="800">
     <Grid>
-        <DataGrid HorizontalAlignment="Left" Height="151" Margin="71,187,0,0" VerticalAlignment="Top" Width="627"/>
+        <DataGrid x:Name="dgInvoices" HorizontalAlignment="Left" Height="151" Margin="71,187,0,0" VerticalAlignment="Top" Width="627"/>
         <ComboBox x:Name="invoiceNumberDropDown" HorizontalAlignment="Left" Margin="83,102,0,0" VerticalAlignment="Top" Width="120"/>
         <ComboBox x:Name="invoiceDateDropDown" HorizontalAlignment="Left" Margin="333,102,0,0" VerticalAlignment="Top" Width="120"/>
         <ComboBox x:Name="totalChargeDropDown" HorizontalAlignment="Left" Margin="578,102,0,0" VerticalAlignment="Top" Width="120"/>

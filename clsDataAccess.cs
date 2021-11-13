@@ -19,7 +19,7 @@ using System.Reflection;
         /// </summary>
 		public clsDataAccess()
 		{
-        sConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Directory.GetCurrentDirectory() + "\\Invoices.accdb";
+        //sConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Directory.GetCurrentDirectory() + "\\Invoices.accdb";
     }
 
         /// <summary>

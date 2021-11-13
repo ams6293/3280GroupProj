@@ -17,9 +17,9 @@ namespace _3280groupProj
     /// <summary>
     /// Interaction logic for Item.xaml
     /// </summary>
-    public partial class Item : Window
+    public partial class Book : Window
     {
-        public Item()
+        public Book()
         {
             InitializeComponent();
         }

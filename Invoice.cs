@@ -15,5 +15,14 @@ namespace _3280groupProj
         public int InvoiceNum { get; set; }
         public string InvoiceDate { get; set; }
         public int TotalCost { get; set; }
+
+        /// <summary>
+        /// overrides tostring class to print invoicenum date and cost
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"{InvoiceNum} {InvoiceDate} {TotalCost}";
+        }
     }
 }

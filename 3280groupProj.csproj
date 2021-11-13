@@ -62,6 +62,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InvoicesDataSet1.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Book.cs" />
     <Compile Include="Main\clsMainLogic.cs" />
     <Compile Include="Items\Item.xaml.cs">
       <DependentUpon>Item.xaml</DependentUpon>

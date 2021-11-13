@@ -23,5 +23,15 @@ namespace _3280groupProj
         {
             InitializeComponent();
         }
+
+        private void selectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //This needs to take the users selected invoice based on the InvoiceID back to the main form
+        }
+
+        private void ClearBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //This will reset the form
+        }
     }
 }

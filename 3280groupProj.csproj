@@ -65,6 +65,8 @@
       <DependentUpon>Item.xaml</DependentUpon>
     </Compile>
     <Compile Include="Main\clsMainSQL.cs" />
+    <Compile Include="Search\clsSearchLogic.cs" />
+    <Compile Include="Search\clsSearchSQL.cs" />
     <Compile Include="Search\Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>

@@ -7,7 +7,39 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="TempSearchBtn" Content="Button" HorizontalAlignment="Left" Margin="122,350,0,0" VerticalAlignment="Top" Width="75" Click="TempSearchBtn_Click"/>
+        <Button x:Name="TempSearchBtn" Content="Button" HorizontalAlignment="Left" Margin="40,39,0,0" VerticalAlignment="Top" Width="75" Click="TempSearchBtn_Click"/>
+        <Menu HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="386" Margin="214,20,0,0">
+            <Button x:Name="SearchBtn" Content="Search for Invoice" FontSize="18" FontFamily="Arial" Height="48" Width="178" Click="SearchBtn_Click"/>
+            <Button x:Name="ItemsBtn" Content="Update Items" FontSize="18" FontFamily="Arial" Height="53" Width="179" Click="ItemsBtn_Click"/>
+        </Menu>
+        <Canvas x:Name="NewInvoiceCanvas" HorizontalAlignment="Left" Height="275" Margin="80,108,0,0" VerticalAlignment="Top" Width="492" Visibility="Hidden">
+            <DataGrid Height="168" Canvas.Top="43" Width="213" IsSynchronizedWithCurrentItem="True" Canvas.Left="23"/>
+            <ComboBox x:Name="ItemsCBox" Canvas.Left="262" Canvas.Top="43" Width="172" Height="29" SelectionChanged="ItemsCBox_SelectionChanged"/>
+            <Label Content="Add an Item:" Canvas.Left="262" Canvas.Top="10" FontFamily="Arial" FontSize="16"/>
+            <Button x:Name="SaveBtn" Content="Save Invoice" Canvas.Left="298" Canvas.Top="210" Width="115" FontFamily="Arial" FontSize="14" Height="34" Background="#FFA1C1A0" FontWeight="Bold" Click="SaveBtn_Click"/>
+            <Button x:Name="DelItemBtn" Content="Delete Item" Canvas.Left="262" Canvas.Top="96" Width="106" FontFamily="Arial" FontSize="14" Height="26" Background="#FFD1A0A0" FontWeight="Bold" Click="DelItemBtn_Click"/>
+            <Label Content="Invoice Date:" Canvas.Left="262" Canvas.Top="146" FontFamily="Arial" FontSize="14"/>
+            <TextBox x:Name="DateBox" Height="23" Canvas.Left="359" TextWrapping="Wrap" Canvas.Top="149" Width="97" PreviewKeyDown="DateBox_PreviewKeyDown"/>
+            <Label Content="Total:" Canvas.Left="23" Canvas.Top="216" FontFamily="Arial" FontSize="16" RenderTransformOrigin="0.13,0.398"/>
+            <Label x:Name="totalLbl" Content="$ 0.00" Canvas.Left="76" Canvas.Top="216" Height="34" Width="160" FontFamily="Arial" FontSize="16"/>
+            <Label Content="Invoice Number: TBD" Canvas.Left="23" Canvas.Top="10" FontFamily="Arial" FontSize="14"/>
+        </Canvas>
+        <Button x:Name="NewInvBtn" Content="Create New Invoice" HorizontalAlignment="Left" Margin="589,291,0,0" VerticalAlignment="Top" Width="173" FontFamily="Arial" FontSize="16" Height="76" Background="#FFF3DCB4" Click="NewInvBtn_Click"/>
+        <Canvas x:Name="SelectedInvoiceCanvas" HorizontalAlignment="Left" Height="275" Margin="80,108,0,0" VerticalAlignment="Top" Width="492" Visibility="Hidden">
+            <DataGrid x:Name="EditDataGrid" Height="168" Canvas.Top="43" Width="213" IsSynchronizedWithCurrentItem="True" Canvas.Left="23"/>
+            <Label Content="Total:" Canvas.Left="23" Canvas.Top="216" FontFamily="Arial" FontSize="16" RenderTransformOrigin="0.13,0.398"/>
+            <Label x:Name="totalLbl2" Content="$ 0.00" Canvas.Left="76" Canvas.Top="216" Height="34" Width="160" FontFamily="Arial" FontSize="16"/>
+            <Label Content="Invoice Number:" Canvas.Left="23" Canvas.Top="10" FontFamily="Arial" FontSize="14"/>
+            <Label x:Name="invoiceNumLbl" Content="Num" Canvas.Left="140" Canvas.Top="10" FontFamily="Arial" FontSize="14"/>
+            <Button x:Name="DelISelectedBtn" Content="Delete Invoice" Canvas.Left="300" Canvas.Top="179" Width="115" FontFamily="Arial" FontSize="14" Height="32" Background="#FFD1A0A0" FontWeight="Bold" Click="DelISelectedBtn_Click"/>
+            <Button x:Name="EditBtn" Content="Edit Invoice" Canvas.Left="300" Canvas.Top="130" Width="115" FontFamily="Arial" FontSize="14" FontWeight="Bold" Height="31" Background="#FFD6BD9E" Click="EditBtn_Click"/>
+        </Canvas>
+        <Canvas x:Name="EditInvoiceCanvas" HorizontalAlignment="Left" Height="285" Margin="335,106,0,0" VerticalAlignment="Top" Width="225" Visibility="Hidden">
+            <ComboBox x:Name="ItemsCBox2" Canvas.Top="43" Width="172" Height="29" SelectionChanged="ItemsCBox2_SelectionChanged" Canvas.Left="10"/>
+            <Label Content="Add an Item:" FontFamily="Arial" FontSize="16" Canvas.Left="10" Canvas.Top="10"/>
+            <Button x:Name="DelItemBtn2" Content="Delete Item" Canvas.Left="10" Canvas.Top="91" Width="106" FontFamily="Arial" FontSize="14" Height="26" Background="#FFD1A0A0" FontWeight="Bold" Click="DelItemBtn2_Click"/>
+            <Button x:Name="SaveBtn2" Content="Save Invoice" Canvas.Left="48" Canvas.Top="230" Width="115" FontFamily="Arial" FontSize="14" Height="34" Background="#FFA1C1A0" FontWeight="Bold" Click="SaveBtn2_Click"/>
+        </Canvas>
 
     </Grid>
 </Window>

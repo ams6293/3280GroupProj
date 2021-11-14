@@ -95,6 +95,47 @@ namespace _3280groupProj
             return sSQL;
 
         }
+
+        /// <summary>
+        /// this gets all invoice numbers
+        /// </summary>
+        /// <returns> sql for gettings invoice numbers</returns>
+        public string SelectInvoiceNums()
+
+        {
+
+            string sSQL = "SELECT InvoiceNum FROM Invoices";
+
+            return sSQL;
+
+        }
+        /// <summary>
+        /// this gets invoice dates
+        /// </summary>
+        /// <returns>sql for getting invoice dates</returns>
+        public string SelectInvoiceDates()
+
+        {
+
+            string sSQL = "SELECT InvoiceDate FROM Invoices";
+
+            return sSQL;
+
+        }
+        /// <summary>
+        /// this gets invoice total costs
+        /// </summary>
+        /// <returns> sql for gettings invoice total costs</returns>
+        public string SelectInvoiceTotals()
+
+        {
+
+            string sSQL = "SELECT TotalCost FROM Invoices";
+
+            return sSQL;
+
+        }
+
     }
 }
 

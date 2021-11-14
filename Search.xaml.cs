@@ -24,6 +24,9 @@ namespace _3280groupProj
         {
             InitializeComponent();
             dgInvoices.ItemsSource = searchLogic.getInvoices();
+            invoiceNumberDropDown.ItemsSource = searchLogic.getInvoiceNums();
+            invoiceDateDropDown.ItemsSource = searchLogic.getInvoiceDates();
+            //totalChargeDropDown.ItemsSource = searchLogic.getInvoiceTotalCosts();
         }
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)

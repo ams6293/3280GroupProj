@@ -73,18 +73,6 @@ namespace _3280groupProj
         bool bIsNewInvoiceSaved;
 
 
-
-        /// <summary>
-        /// this will go away later
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TempSearchBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Search search = new Search();
-            //search.Show();
-        }
-
         /// <summary>
         /// When the user clicks the "Search for Invoice" button
         /// </summary>

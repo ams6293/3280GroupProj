@@ -7,11 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="TempSearchBtn" Content="Button" HorizontalAlignment="Left" Margin="40,39,0,0" VerticalAlignment="Top" Width="75" Click="TempSearchBtn_Click"/>
-        <Menu HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="386" Margin="214,20,0,0">
-            <Button x:Name="SearchBtn" Content="Search for Invoice" FontSize="18" FontFamily="Arial" Height="48" Width="178" Click="SearchBtn_Click"/>
-            <Button x:Name="ItemsBtn" Content="Update Items" FontSize="18" FontFamily="Arial" Height="53" Width="179" Click="ItemsBtn_Click"/>
-        </Menu>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Padding="5,3,0,3" FontFamily="Arial" FontSize="14">
+                <MenuItem Header="Search for Invoice" Click="SearchBtn_Click"></MenuItem>
+                <MenuItem Header="Update Items" Click="ItemsBtn_Click"></MenuItem>
+            </Menu>
+            <StackPanel></StackPanel>
+        </DockPanel>
         <Canvas x:Name="NewInvoiceCanvas" HorizontalAlignment="Left" Height="275" Margin="80,108,0,0" VerticalAlignment="Top" Width="492" Visibility="Hidden">
             <DataGrid Height="168" Canvas.Top="43" Width="213" IsSynchronizedWithCurrentItem="True" Canvas.Left="23"/>
             <ComboBox x:Name="ItemsCBox" Canvas.Left="262" Canvas.Top="43" Width="172" Height="29" SelectionChanged="ItemsCBox_SelectionChanged"/>
@@ -24,7 +26,7 @@
             <Label x:Name="totalLbl" Content="$ 0.00" Canvas.Left="76" Canvas.Top="216" Height="34" Width="160" FontFamily="Arial" FontSize="16"/>
             <Label Content="Invoice Number: TBD" Canvas.Left="23" Canvas.Top="10" FontFamily="Arial" FontSize="14"/>
         </Canvas>
-        <Button x:Name="NewInvBtn" Content="Create New Invoice" HorizontalAlignment="Left" Margin="589,291,0,0" VerticalAlignment="Top" Width="173" FontFamily="Arial" FontSize="16" Height="76" Background="#FFF3DCB4" Click="NewInvBtn_Click"/>
+        <Button x:Name="NewInvBtn" Content="Create New Invoice" HorizontalAlignment="Left" Margin="22,49,0,0" VerticalAlignment="Top" Width="161" FontFamily="Arial" FontSize="14" Height="40" Background="#FFE6DDC0" Click="NewInvBtn_Click"/>
         <Canvas x:Name="SelectedInvoiceCanvas" HorizontalAlignment="Left" Height="275" Margin="80,108,0,0" VerticalAlignment="Top" Width="492" Visibility="Hidden">
             <DataGrid x:Name="EditDataGrid" Height="168" Canvas.Top="43" Width="213" IsSynchronizedWithCurrentItem="True" Canvas.Left="23"/>
             <Label Content="Total:" Canvas.Left="23" Canvas.Top="216" FontFamily="Arial" FontSize="16" RenderTransformOrigin="0.13,0.398"/>

@@ -23,10 +23,19 @@ namespace _3280groupProj
         public Search()
         {
             InitializeComponent();
-            dgInvoices.ItemsSource = searchLogic.getInvoices();
+            try
+            {
+                dgInvoices.ItemsSource = searchLogic.getInvoices();
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show($"There was a problem getting Invoice information: {e.Message}");
+            }
+            
             invoiceNumberDropDown.ItemsSource = searchLogic.getInvoiceNums();
             invoiceDateDropDown.ItemsSource = searchLogic.getInvoiceDates();
-            //totalChargeDropDown.ItemsSource = searchLogic.getInvoiceTotalCosts();
+            totalChargeDropDown.ItemsSource = searchLogic.getInvoiceTotalCosts();
         }
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)

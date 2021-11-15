@@ -22,23 +22,8 @@ namespace _3280groupProj
         /// <returns> returns the appropriate string based on what info is provided.</returns>
         public override string ToString()
         {
-            if(InvoiceNum == 0 && TotalCost == 0)
-            {
-                return $"{InvoiceDate}";
-            }
-            else if(InvoiceDate == null && TotalCost == 0)
-            {
-                return $"{InvoiceNum}";
-            }
-            else if(InvoiceDate == null && InvoiceNum == 0)
-            {
-                return $"{TotalCost}";
-            }
-            else
-            {
-                return $"{InvoiceNum} {InvoiceDate} {TotalCost}";
-            }
-
+ 
+            return $"{InvoiceNum} {InvoiceDate} {TotalCost}";
         }
 
       

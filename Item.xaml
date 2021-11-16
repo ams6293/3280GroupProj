@@ -7,6 +7,18 @@
         mc:Ignorable="d"
         Title="Item" Height="450" Width="800">
     <Grid>
-        
+        <DataGrid Name="dgItems" HorizontalAlignment="Left" Height="193" Margin="42,201,0,0" VerticalAlignment="Top" Width="709"/>
+        <Button Name="btnShowAllItems" Content="Search Items" HorizontalAlignment="Left" Margin="146,147,0,0" VerticalAlignment="Top" Width="89" Height="29"/>
+        <Button x:Name="btnNewItem" Content="New Item" HorizontalAlignment="Left" Margin="512,147,0,0" VerticalAlignment="Top" Width="89" Height="29" Click="btnNewItem_Click"/>
+        <Label x:Name="lblItemsWindow" Content="Add and Edit Items" HorizontalAlignment="Left" Margin="317,10,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
+        <Button x:Name="btnDeleteItem" Content="Delete Item" HorizontalAlignment="Left" Margin="620,147,0,0" VerticalAlignment="Top" Width="89" Height="29" RenderTransformOrigin="-0.034,0.478" Click="btnDeleteItem_Click"/>
+        <CheckBox x:Name="cbAllItems" Content="Display All Items" HorizontalAlignment="Left" Margin="146,125,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbInvoiceNum" HorizontalAlignment="Left" Height="23" Margin="146,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="tbItemCode" HorizontalAlignment="Left" Height="23" Margin="146,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.325,-0.113"/>
+        <Label x:Name="lblInvNum" Content="Invoice Number:" HorizontalAlignment="Left" Margin="42,53,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblItemCode" Content="Item Code:" HorizontalAlignment="Left" Margin="73,84,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnUpdateItem" Content="Update Item" HorizontalAlignment="Left" Margin="405,147,0,0" VerticalAlignment="Top" Width="89" Height="29" Click="btnUpdateItem_Click"/>
+        <ScrollBar x:Name="dgScroll" HorizontalAlignment="Left" Margin="751,201,0,0" VerticalAlignment="Top" Height="193" Width="23" RenderTransformOrigin="0.426,0.495"/>
+
     </Grid>
 </Window>

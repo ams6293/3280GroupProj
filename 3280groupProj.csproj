@@ -89,6 +89,15 @@
     <Compile Include="Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WndDeleteItem.xaml.cs">
+      <DependentUpon>WndDeleteItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="wndNewItem.xaml.cs">
+      <DependentUpon>wndNewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WndUpdateItem.xaml.cs">
+      <DependentUpon>WndUpdateItem.xaml</DependentUpon>
+    </Compile>
     <Page Include="Item.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +115,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Search.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WndDeleteItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="wndNewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WndUpdateItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

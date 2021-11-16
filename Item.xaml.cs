@@ -19,9 +19,48 @@ namespace _3280groupProj
     /// </summary>
     public partial class Book : Window
     {
+        WndUpdateItem updateItem;
+
+        wndNewItem newItem;
+
+        WndDeleteItem deleteItem;
+
         public Book()
         {
             InitializeComponent();
+
+            updateItem = new WndUpdateItem();
+
+            newItem = new wndNewItem();
+
+            deleteItem = new WndDeleteItem();
+        }
+
+        private void btnUpdateItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+
+            updateItem.ShowDialog();
+
+            this.Show();
+        }
+
+        private void btnNewItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+
+            newItem.ShowDialog();
+
+            this.Show();
+        }
+
+        private void btnDeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+
+            deleteItem.ShowDialog();
+
+            this.Show();
         }
     }
 }

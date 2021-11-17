@@ -23,7 +23,7 @@ namespace _3280groupProj.Items
         /// <param name="sInvoiceNum"></param>
         /// <param name="sItemCode"></param>
         /// <returns></returns>
-        public string selectInvoiceNumber(string sInvoiceNum, string sItemCode)
+        public string selectInvoicebyItem(string sInvoiceNum, string sItemCode)
         {
             string sSQL = "select distinct " + sInvoiceNum + " from LineItems where ItemCode = " + sItemCode;
             return sSQL;

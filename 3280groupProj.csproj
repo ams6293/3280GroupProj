@@ -77,6 +77,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InvoicesDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Item.cs" />
     <Compile Include="Items\clsItemsLogic.cs" />
     <Compile Include="Items\clsItemsSQL.cs" />
     <Compile Include="Main\clsMainLogic.cs" />

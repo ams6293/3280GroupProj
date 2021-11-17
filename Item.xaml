@@ -9,24 +9,24 @@
     <Grid Margin="0,0,27,25">
         <DataGrid Name="dgItems" HorizontalAlignment="Left" Height="214" Margin="42,349,0,0" VerticalAlignment="Top" Width="789"/>
         <Button Name="btnShowAllItems" Content="Search Items" HorizontalAlignment="Left" Margin="149,181,0,0" VerticalAlignment="Top" Width="89" Height="29"/>
-        <Button x:Name="btnNewItem" Content="New Item" HorizontalAlignment="Left" Margin="618,296,0,0" VerticalAlignment="Top" Width="89" Height="29" Click="btnNewItem_Click"/>
+        <Button x:Name="btnNewItem" Content="New Item" HorizontalAlignment="Left" Margin="618,282,0,0" VerticalAlignment="Top" Width="89" Height="29" Click="btnNewItem_Click"/>
         <Label x:Name="lblItemsWindow" Content="Add and Edit Items" HorizontalAlignment="Left" Margin="302,10,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
-        <Button x:Name="btnDeleteItem" Content="Delete Item" HorizontalAlignment="Left" Margin="726,296,0,0" VerticalAlignment="Top" Width="89" Height="29" RenderTransformOrigin="-0.034,0.478" Click="btnDeleteItem_Click"/>
+        <Button x:Name="btnDeleteItem" Content="Delete Item" HorizontalAlignment="Left" Margin="726,282,0,0" VerticalAlignment="Top" Width="89" Height="29" RenderTransformOrigin="-0.034,0.478" Click="btnDeleteItem_Click"/>
         <CheckBox x:Name="cbAllItems" Content="Display All Items" HorizontalAlignment="Left" Margin="149,159,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbInvoiceNum" HorizontalAlignment="Left" Height="23" Margin="149,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="tbItemCode" HorizontalAlignment="Left" Height="23" Margin="149,118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.325,-0.113"/>
         <Label x:Name="lblInvNum" Content="Invoice Number:" HorizontalAlignment="Left" Margin="45,87,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblItemCode" Content="Item Code:" HorizontalAlignment="Left" Margin="76,118,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnUpdateItem" Content="Update Item" HorizontalAlignment="Left" Margin="506,296,0,0" VerticalAlignment="Top" Width="89" Height="29" Click="btnUpdateItem_Click"/>
+        <Button x:Name="btnUpdateItem" Content="Update Item" HorizontalAlignment="Left" Margin="506,282,0,0" VerticalAlignment="Top" Width="89" Height="29" Click="btnUpdateItem_Click"/>
         <ScrollBar x:Name="dgScroll" HorizontalAlignment="Left" Margin="831,350,0,0" VerticalAlignment="Top" Height="213" Width="29" RenderTransformOrigin="0.426,0.495"/>
         <GroupBox Header="Search for a specific Invoice and Item Code" HorizontalAlignment="Left" Height="195" Margin="42,50,0,0" VerticalAlignment="Top" Width="304" FontWeight="Bold"/>
-        <TextBox x:Name="tbItemCode2" HorizontalAlignment="Left" Height="23" Margin="561,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.325,-0.113"/>
-        <Label x:Name="lblItemCode2" Content="Item Code:" HorizontalAlignment="Left" Margin="488,100,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblItemCost" Content="Item Cost:" HorizontalAlignment="Left" Margin="488,126,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbItemCost" HorizontalAlignment="Left" Height="23" Margin="561,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.325,-0.113"/>
-        <Label x:Name="lblItemDesc" Content="Item Description:" HorizontalAlignment="Left" Margin="456,159,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbItemDesc" HorizontalAlignment="Left" Height="112" Margin="561,159,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="215"/>
-        <GroupBox Header="Modify an Item" HorizontalAlignment="Left" Height="284" Margin="445,50,0,0" VerticalAlignment="Top" Width="397" FontWeight="Bold"/>
+        <TextBox x:Name="tbItemCode2" HorizontalAlignment="Left" Height="23" Margin="561,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.325,-0.113"/>
+        <Label x:Name="lblItemCode2" Content="Item Code:" HorizontalAlignment="Left" Margin="488,86,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblItemCost" Content="Item Cost:" HorizontalAlignment="Left" Margin="488,112,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbItemCost" HorizontalAlignment="Left" Height="23" Margin="561,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.325,-0.113"/>
+        <Label x:Name="lblItemDesc" Content="Item Description:" HorizontalAlignment="Left" Margin="456,145,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbItemDesc" HorizontalAlignment="Left" Height="112" Margin="561,145,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="215"/>
+        <GroupBox Header="Modify or Add an Item" HorizontalAlignment="Left" Height="284" Margin="445,50,0,0" VerticalAlignment="Top" Width="397" FontWeight="Bold"/>
 
     </Grid>
 </Window>

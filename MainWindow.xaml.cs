@@ -253,11 +253,6 @@ namespace _3280groupProj
 
             try
             {
-                //NewDataGrid.Columns[0].Header = "Name";
-                //NewDataGrid.Columns[1].Header = "Description";
-                //NewDataGrid.Columns[2].Header = "Cost";
-
-                //NewDataGrid.Add("five", "six", "seven", "eight");
                 
             }
             catch (Exception ex)
@@ -463,6 +458,11 @@ namespace _3280groupProj
             invoicesDataSetItemDescTableAdapter.Fill(invoicesDataSet.ItemDesc);
             System.Windows.Data.CollectionViewSource itemDescViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("itemDescViewSource")));
             itemDescViewSource.View.MoveCurrentToFirst();
+            // Load data into the table LineItems. You can modify this code as needed.
+            _3280groupProj.InvoicesDataSetTableAdapters.LineItemsTableAdapter invoicesDataSetLineItemsTableAdapter = new _3280groupProj.InvoicesDataSetTableAdapters.LineItemsTableAdapter();
+            invoicesDataSetLineItemsTableAdapter.Fill(invoicesDataSet.LineItems);
+            System.Windows.Data.CollectionViewSource lineItemsViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("lineItemsViewSource")));
+            lineItemsViewSource.View.MoveCurrentToFirst();
         }
     }
 }

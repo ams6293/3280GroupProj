@@ -81,3 +81,4 @@ C:\Users\Skotb\OneDrive\Documents\GitHub\3280GroupProj\obj\Debug\_3280groupProj.
 C:\Users\Skotb\OneDrive\Documents\GitHub\3280GroupProj\obj\Debug\3280groupProj.csproj.GenerateResource.cache
 C:\Users\Skotb\OneDrive\Documents\GitHub\3280GroupProj\obj\Debug\3280groupProj.exe
 C:\Users\Skotb\OneDrive\Documents\GitHub\3280GroupProj\obj\Debug\3280groupProj.pdb
+C:\Users\ashle\Documents\WinAppFall2021\GroupProject\3280GroupProj\obj\Debug\GeneratedInternalTypeHelper.g.cs

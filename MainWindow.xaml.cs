@@ -32,12 +32,17 @@ namespace _3280groupProj
             mainLogic = new clsMainLogic();
             
             bIsDisplayingInvoice = false;
-            bIsDisplayingNewInvoice = false;
+            bIsDisplayingNewInvoice = true;     // the main window is always displaying a new invoice
             bIsNewInvoiceSaved = false;
+
+            // load the combo boxes
+            LoadComboBox();
 
             // so I don't get an error
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
+
+        #region Attributes
 
         /// <summary>
         /// object of the Search Window
@@ -53,6 +58,11 @@ namespace _3280groupProj
         /// object of the Business Logic class for the Main Window
         /// </summary>
         clsMainLogic mainLogic;
+
+        /// <summary>
+        /// object of the Item class
+        /// </summary>
+        ///Item cItem;
 
         /// <summary>
         /// holds if the user has selected an invoice
@@ -72,6 +82,8 @@ namespace _3280groupProj
         /// </summary>
         bool bIsNewInvoiceSaved;
 
+        #endregion
+
 
         /// <summary>
         /// When the user clicks the "Search for Invoice" button
@@ -89,10 +101,10 @@ namespace _3280groupProj
 
 
             // set is invoice selected to false
-            bIsDisplayingInvoice = false;
+            bIsDisplayingInvoice = false;       // DEPENDS ON IF THE USER SELECTS AN INVOICE!!!
 
             // set is displaying new invoice to false
-            bIsDisplayingNewInvoice = false;
+            bIsDisplayingNewInvoice = false;    // DEPENDS ON IF THE USER SELECTS AN INVOICE!!!
 
             // clear the main screen of the canvases
             ClearMain();
@@ -122,8 +134,8 @@ namespace _3280groupProj
             // set is invoice selected to false
             bIsDisplayingInvoice = false;
 
-            // set is displaying new invoice to false
-            bIsDisplayingNewInvoice = false;
+            // set is displaying new invoice to true -- when we get back, the 
+            bIsDisplayingNewInvoice = true;
 
             // clear the main screen of the canvases
             ClearMain();
@@ -168,9 +180,22 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void ItemsCBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // display item and details from database in the data grid
+            try
+            {
+                // display item and details from combo box in the data grid
+                itemDescDataGrid.Items.Add(ItemsCBox.SelectedItem);
 
-            // update the running total
+
+                // update the running total
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+
+            
         }
 
         /// <summary>
@@ -225,9 +250,28 @@ namespace _3280groupProj
             // - the corresponding price of the book
 
             // make the new invoice invisible? -- or keep it?
+
+            try
+            {
+                //NewDataGrid.Columns[0].Header = "Name";
+                //NewDataGrid.Columns[1].Header = "Description";
+                //NewDataGrid.Columns[2].Header = "Cost";
+
+                //NewDataGrid.Add("five", "six", "seven", "eight");
+                
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+
+            
+
         }
 
-        
+
 
 
 
@@ -307,6 +351,7 @@ namespace _3280groupProj
         private void ItemsCBox2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // show item in data grid
+            
 
             // change the running total
         }
@@ -350,6 +395,28 @@ namespace _3280groupProj
         }
 
 
+        /// <summary>
+        /// method to load the items to the combo boxes
+        /// </summary>
+        private void LoadComboBox()
+        {
+            try
+            {
+                // displays list of items in the New Invoice combo box
+                ItemsCBox.ItemsSource = mainLogic.GetItems();
+
+                // displays list of items in the New Invoice combo box
+                ItemsCBox2.ItemsSource = mainLogic.GetItems();
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+
+
 
         /// <summary>
         /// method to clear the main window
@@ -358,7 +425,7 @@ namespace _3280groupProj
         {
             // reset the new invoice canvases
 
-            // hide all canvases
+            // show the new invoice canvas
 
             // reset the selected invoice canvas
 
@@ -387,11 +454,15 @@ namespace _3280groupProj
             }
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
 
-
-
-
-
-
+            _3280groupProj.InvoicesDataSet invoicesDataSet = ((_3280groupProj.InvoicesDataSet)(this.FindResource("invoicesDataSet")));
+            // Load data into the table ItemDesc. You can modify this code as needed.
+            _3280groupProj.InvoicesDataSetTableAdapters.ItemDescTableAdapter invoicesDataSetItemDescTableAdapter = new _3280groupProj.InvoicesDataSetTableAdapters.ItemDescTableAdapter();
+            invoicesDataSetItemDescTableAdapter.Fill(invoicesDataSet.ItemDesc);
+            System.Windows.Data.CollectionViewSource itemDescViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("itemDescViewSource")));
+            itemDescViewSource.View.MoveCurrentToFirst();
+        }
     }
 }

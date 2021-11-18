@@ -80,6 +80,7 @@
     <Compile Include="Item.cs" />
     <Compile Include="Items\clsItemsLogic.cs" />
     <Compile Include="Items\clsItemsSQL.cs" />
+    <Compile Include="LineItems.cs" />
     <Compile Include="Main\clsMainLogic.cs" />
     <Compile Include="Item.xaml.cs">
       <DependentUpon>Item.xaml</DependentUpon>

@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace _3280groupProj
 {
-    class Item
+    class LineItems
     {
-
         /// <summary>
-        /// this class is the geters and setters for items
+        /// this class is the geters and setters for LineItems table
         /// </summary>
+        public int InvoiceNum { get; set; }
+        public int LineItemNum { get; set; }
         public string ItemCode { get; set; }
-        public string ItemDesc { get; set; }
         public int Cost { get; set; }
 
         /// <summary>
-        /// overrides tostring class to print ItemCode, ItemDesc, and Cost
+        /// overrides tostring class to print InvoiceNum, ItemCode, LineItemNum, and Cost
         /// </summary>
         /// <returns> returns the appropriate string based on what info is provided.</returns>
         public override string ToString()
         {
 
-            return $"{ItemCode} {ItemDesc} {Cost}";
+            return $"{InvoiceNum} {ItemCode} {LineItemNum} {Cost}";
         }
     }
 }

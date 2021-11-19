@@ -90,7 +90,7 @@ namespace _3280groupProj
 
         {
 
-            string sSQL = "SELECT * FROM Invoices WHERE TotalCost = #" + sDate + "#";
+            string sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = #" + sDate + "#";
 
             return sSQL;
 

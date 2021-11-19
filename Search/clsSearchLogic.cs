@@ -9,7 +9,13 @@ namespace _3280groupProj
 {
     class clsSearchLogic
     {
+        /// <summary>
+        /// this gives us a link to our database
+        /// </summary>
         clsDataAccess db = new clsDataAccess();
+        /// <summary>
+        /// this is a link to all sql queries
+        /// </summary>
         clsSearchSQL Sql = new clsSearchSQL();
 
         /// <summary>
@@ -53,13 +59,21 @@ namespace _3280groupProj
             int iNumRetValues = 0;
             var retList = new List<int>();
             DataSet ds;
-
-            ds = db.ExecuteSQLStatement(Sql.SelectInvoiceNums(), ref iNumRetValues);
-
-            foreach (DataRow dr in ds.Tables[0].Rows)
+            try
             {
-                retList.Add(Int32.Parse(dr["InvoiceNum"].ToString()));
+                ds = db.ExecuteSQLStatement(Sql.SelectInvoiceNums(), ref iNumRetValues);
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    retList.Add(Int32.Parse(dr["InvoiceNum"].ToString()));
+                }
             }
+            catch (Exception a)
+            {
+
+                throw a;
+            }
+           
             return retList;
         }
         /// <summary>
@@ -71,13 +85,21 @@ namespace _3280groupProj
             int iNumRetValues = 0;
             var retList = new List<string>();
             DataSet ds;
-
-            ds = db.ExecuteSQLStatement(Sql.SelectInvoiceDates(), ref iNumRetValues);
-
-            foreach (DataRow dr in ds.Tables[0].Rows)
+            try
             {
-                retList.Add(dr["InvoiceDate"].ToString());
+                ds = db.ExecuteSQLStatement(Sql.SelectInvoiceDates(), ref iNumRetValues);
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    retList.Add(dr["InvoiceDate"].ToString());
+                }
             }
+            catch (Exception b)
+            {
+
+                throw b;
+            }
+          
             return retList;
         }
 
@@ -90,13 +112,21 @@ namespace _3280groupProj
             int iNumRetValues = 0;
             var retList = new List<int>();
             DataSet ds;
-
-            ds = db.ExecuteSQLStatement(Sql.SelectInvoiceTotals(), ref iNumRetValues);
-
-            foreach (DataRow dr in ds.Tables[0].Rows)
+            try
             {
-                retList.Add(Int32.Parse(dr["TotalCost"].ToString()));
+                ds = db.ExecuteSQLStatement(Sql.SelectInvoiceTotals(), ref iNumRetValues);
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    retList.Add(Int32.Parse(dr["TotalCost"].ToString()));
+                }
             }
+            catch (Exception c)
+            {
+
+                throw c;
+            }
+         
             return retList;
         }
     }

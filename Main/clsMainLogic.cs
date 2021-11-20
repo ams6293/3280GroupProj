@@ -122,6 +122,33 @@ namespace _3280groupProj.Items
             }
         }
 
+        /*
+         * IGNORE THIS FOR NOW 
+         * 
+         * ///////////////////// DOESN'T WORK -- only after the second selection, it's always one item behind
+                int sum = 0;
+                for (int i = 0; i < itemDescDataGrid.Items.Count - 1; i++)
+                {
+                    sum += (Int32.Parse((itemDescDataGrid.Columns[2].GetCellContent(itemDescDataGrid.Items[i]) as TextBlock).Text));
+                }
+
+                totalLbl.Content = "$ " + sum + ".00";
+         */
+
+        /*
+         * ///////////////////// DOESN'T WORK -- only after the second selection, it's always one item behind
+                int sum = 0;
+                for (int i = 0; i < itemDescDataGrid1.Items.Count - 1; i++)
+                {
+                    // adds each row in the cost column together -- or it SHOULD!!
+                    sum += (Int32.Parse((itemDescDataGrid1.Columns[2].GetCellContent(itemDescDataGrid1.Items[i]) as TextBlock).Text));
+                }
+
+                // displays the total in a label
+                totalLbl2.Content = "$ " + sum + ".00";
+         * 
+         */
+
 
 
 

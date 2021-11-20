@@ -37,14 +37,20 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Canvas>
-        <Canvas x:Name="SelectedInvoiceCanvas" HorizontalAlignment="Left" Height="275" Margin="80,108,0,0" VerticalAlignment="Top" Width="492" Visibility="Hidden">
-            <DataGrid x:Name="EditDataGrid" Height="168" Canvas.Top="43" Width="213" IsSynchronizedWithCurrentItem="True" Canvas.Left="23"/>
+        <Canvas x:Name="SelectedInvoiceCanvas" HorizontalAlignment="Left" Height="275" Margin="80,108,0,0" VerticalAlignment="Top" Width="492" Visibility="Hidden" DataContext="{StaticResource itemDescViewSource}">
             <Label Content="Total:" Canvas.Left="23" Canvas.Top="216" FontFamily="Arial" FontSize="16" RenderTransformOrigin="0.13,0.398"/>
             <Label x:Name="totalLbl2" Content="$ 0.00" Canvas.Left="76" Canvas.Top="216" Height="34" Width="160" FontFamily="Arial" FontSize="16"/>
             <Label Content="Invoice Number:" Canvas.Left="23" Canvas.Top="10" FontFamily="Arial" FontSize="14"/>
             <Label x:Name="invoiceNumLbl" Content="Num" Canvas.Left="140" Canvas.Top="10" FontFamily="Arial" FontSize="14"/>
             <Button x:Name="DelISelectedBtn" Content="Delete Invoice" Canvas.Left="300" Canvas.Top="179" Width="115" FontFamily="Arial" FontSize="14" Height="32" Background="#FFD1A0A0" FontWeight="Bold" Click="DelISelectedBtn_Click"/>
             <Button x:Name="EditBtn" Content="Edit Invoice" Canvas.Left="300" Canvas.Top="130" Width="115" FontFamily="Arial" FontSize="14" FontWeight="Bold" Height="31" Background="#FFD6BD9E" Click="EditBtn_Click"/>
+            <DataGrid x:Name="itemDescDataGrid1" AutoGenerateColumns="False" EnableRowVirtualization="True" Height="153" Canvas.Left="23" RowDetailsVisibilityMode="VisibleWhenSelected" Canvas.Top="41" Width="213">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="itemCodeColumn1" Binding="{Binding ItemCode}" Header="Item Code" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="itemDescColumn1" Binding="{Binding ItemDesc}" Header="Item Desc" Width="SizeToHeader"/>
+                    <DataGridTextColumn x:Name="costColumn1" Binding="{Binding Cost}" Header="Cost" Width="SizeToHeader"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </Canvas>
         <Canvas x:Name="EditInvoiceCanvas" HorizontalAlignment="Left" Height="285" Margin="335,106,0,0" VerticalAlignment="Top" Width="225" Visibility="Hidden">
             <ComboBox x:Name="ItemsCBox2" Canvas.Top="43" Width="172" Height="29" SelectionChanged="ItemsCBox2_SelectionChanged" Canvas.Left="10"/>

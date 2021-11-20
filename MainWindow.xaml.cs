@@ -25,14 +25,15 @@ namespace _3280groupProj
         public MainWindow()
         {
             InitializeComponent();
-            
+
 
             // initialize attributes
             winItem = new Book();
             mainLogic = new clsMainLogic();
-            
-            bIsDisplayingInvoice = false;
-            bIsDisplayingNewInvoice = true;     // the main window is always displaying a new invoice
+
+            // the invoice number is 0 until it is passed in and changed
+            invoiceID = 0;
+
             bIsNewInvoiceSaved = false;
 
             // load the combo boxes
@@ -41,6 +42,7 @@ namespace _3280groupProj
             // so I don't get an error
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
+
 
         #region Attributes
 
@@ -60,29 +62,21 @@ namespace _3280groupProj
         clsMainLogic mainLogic;
 
         /// <summary>
-        /// object of the Item class
+        /// used to hold the InvoiceNum of the invoice passed from main
+        /// If the there isn't a selected invoice, it's zero
         /// </summary>
-        ///Item cItem;
-
-        /// <summary>
-        /// holds if the user has selected an invoice
-        /// and it is being displayed
-        /// </summary>
-        bool bIsDisplayingInvoice;
-
-        /// <summary>
-        /// holds if the user has already clicked 
-        /// on the new invoice button
-        /// </summary>
-        bool bIsDisplayingNewInvoice;
+        public static int invoiceID;    /// should it be static??
 
         /// <summary>
         /// holds if a new invoice has been saved
-        /// edits the invoice instead of adding it
+        /// edits the invoice tables instead of adding it
         /// </summary>
         bool bIsNewInvoiceSaved;
 
         #endregion
+
+
+        #region Menu
 
 
         /// <summary>
@@ -92,29 +86,32 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
-            winSearch = new Search();
+            try
+            {
+                // must instantiate the search window here instead of the constructor
+                // won't work otherwise
+                winSearch = new Search();
 
-            // close this window and open the search window
-            this.Hide();
-            winSearch.ShowDialog();
-            this.Show();
+                // close this window and open the search window
+                this.Hide();
+
+                // clear the main screen of the canvases
+                ClearMain();    // if the user cancels a selection, it will show the refreshed main window
+
+                winSearch.ShowDialog();
+                this.Show();    // this window shows again after the search window is closed
 
 
-            // set is invoice selected to false
-            bIsDisplayingInvoice = false;       // DEPENDS ON IF THE USER SELECTS AN INVOICE!!!
-
-            // set is displaying new invoice to false
-            bIsDisplayingNewInvoice = false;    // DEPENDS ON IF THE USER SELECTS AN INVOICE!!!
-
-            // clear the main screen of the canvases
-            ClearMain();
-
-            // if the user selects an invoice in the search window, 
-            //      then I will display that and scrap the ivoice
-            //      that the user was previously making
-
-            // but if the user cancels the search window
-            //      do I keep the invoice they were working on?
+                // if the user selects an invoice in the search window, 
+                //  the search window will call my ShowSelectedInvoice(int invoiceNum) method     
+                //  **** will talk to Amber about this ****
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -124,54 +121,38 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void ItemsBtn_Click(object sender, RoutedEventArgs e)
         {
-            winItem = new Book();
+            try
+            {
+                // must instantiate the item window here instead of the constructor
+                // won't work otherwise
+                winItem = new Book();
 
-            // close this window and open the items window
-            this.Hide();
-            winItem.ShowDialog();
-            this.Show();
+                // close this window and open the items window
+                this.Hide();
 
-            // set is invoice selected to false
-            bIsDisplayingInvoice = false;
+                
 
-            // set is displaying new invoice to true -- when we get back, the 
-            bIsDisplayingNewInvoice = true;
+                winItem.ShowDialog();
+                this.Show();
 
-            // clear the main screen of the canvases
-            ClearMain();
+                // clear the main screen of the canvases
+                ClearMain();
 
-            // if the user is in the process of making a new invoice
-            //      should that invoice be scrapped when the main window
-            //      opens back up, or should it still be there?
-
+                // load the combo boxes again -- the user may have changed the items
+                LoadComboBox();
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
-        /// <summary>
-        /// When the user clicks the "Create New Invoice" button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NewInvBtn_Click(object sender, RoutedEventArgs e)
-        {
-            // set is invoice selected to false
-            bIsDisplayingInvoice = false;
+        #endregion
 
-            // set is displaying new invoice to true
-            bIsDisplayingNewInvoice = true;
 
-            // clear the main screen of the canvases
-            ClearMain();
-
-            // show the new invoice in a canvas
-            // all items will be loaded into a combobox ---- with be current with all items in the table
-            // once combobox items are selected, they will show up in the data grid
-            // a running total of item prices must be displayed and updated
-            //      as items are entered or deleted
-            //      -- in a label below the data grid?
-
-            // if a user is already in the process of making an invoice, 
-            // I'll scrap the invoice
-        }
+        #region NewInvoice
 
         /// <summary>
         /// when a user selects an item from the new invoice items combo box
@@ -185,8 +166,16 @@ namespace _3280groupProj
                 // display item and details from combo box in the data grid
                 itemDescDataGrid.Items.Add(ItemsCBox.SelectedItem);
 
-
                 // update the running total
+
+                ///////////////////// DOESN'T WORK -- only after the second selection, it's always one item behind
+                int sum = 0;
+                for (int i = 0; i < itemDescDataGrid.Items.Count - 1; i++)
+                {
+                    sum += (Int32.Parse((itemDescDataGrid.Columns[2].GetCellContent(itemDescDataGrid.Items[i]) as TextBlock).Text));
+                }
+
+                totalLbl.Content = "$ " + sum + ".00";
             }
             catch (Exception ex)
             {
@@ -194,8 +183,6 @@ namespace _3280groupProj
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
-
-            
         }
 
         /// <summary>
@@ -205,10 +192,19 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void DelItemBtn_Click(object sender, RoutedEventArgs e)
         {
-            // the item that was selected on the data grid is removed from the 
-            //      invoice and data grid
+            try
+            {
+                // make sure an item is currently selected in the data grid
+                // the item that was selected on the data grid is removed
 
-            // update the running total
+                // update the running total
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -218,10 +214,20 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void DateBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            // make sure that it's numbers and slashes only?
-            // prevent spaces, letters, special characters?
+            try
+            {
+                // make sure that it's numbers and slashes only?
+                // prevent spaces, letters, special characters?
+                // how do I check if it's a read date?
 
-            // the user MUST enter a date
+                // the user MUST enter a date -- show error message
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -231,29 +237,29 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            // set the invoice to saved
-            // this means that the next time the save button is clicked, 
-            //      we update the table instead of add to it
-            bIsNewInvoiceSaved = true;
-
-            // the user cannot save the invoice without adding a date
-
-            // all data in the invoice is added to the invoice table:
-            // - invoice num (automatically created)
-            // - invoice date
-            // - total cost
-
-            // update the line items table -- is this automatic with the changes to the invoice table?
-            // - the new invoice number
-            // - the new line item index
-            // - the corresponding book
-            // - the corresponding price of the book
-
-            // make the new invoice invisible? -- or keep it?
-
             try
             {
-                
+                // check if the invoice is saved, if not:
+                // set the invoice to saved
+                // this means that the next time the save button is clicked, 
+                //      we update the table instead of add to it
+                bIsNewInvoiceSaved = true;
+
+                // if the invoice has already been saved, update the invoice instead of adding it
+
+                // the user cannot save the invoice without adding a date
+                // can the user save an invoice without adding items?
+
+                // all data in the invoice is added to the invoice table:
+                // - invoice num (automatically created)
+                // - invoice date
+                // - total cost
+
+                // update the line items table
+                // - the new invoice number
+                // - the new line item index
+                // - the corresponding book
+                // - the corresponding price of the book
             }
             catch (Exception ex)
             {
@@ -261,17 +267,12 @@ namespace _3280groupProj
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
-
-            
-
         }
 
+        #endregion
 
 
-
-
-        /////////////////////////////////////////////////////////////////////////////////////////
-        /// SELECTED INVOICE BELOW
+        #region SelectedInvoice
 
 
         /// <summary>
@@ -280,21 +281,31 @@ namespace _3280groupProj
         /// </summary>
         public void ShowSelectedInvoice(int invoiceNum)
         {
-            // selected invoice is now shown
-            bIsDisplayingInvoice = true;
+            try
+            {
+                // set the passed int number as the InvoiceId
+                invoiceNum = invoiceID;
 
-            // set is displaying new invoice to false
-            bIsDisplayingNewInvoice = false;
+                // Display the selected invoice canvas
+                SelectedInvoiceCanvas.Visibility = Visibility.Visible;
+                EditBtn.Visibility = Visibility.Visible;
 
-            // call business logic methods to get information
+                // load the selected data grid with the invoice details
+                //  - items
+                //  - cost
+                //  - line item number?
+                //  - date?
 
-            // load the search window with information about the invoice
+                // change invoice number label
 
-            // set SearchCanvas to visible
-
-            // change invoice number label
-
-            // change running total
+                // change running total label
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
 
@@ -305,16 +316,20 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void DelISelectedBtn_Click(object sender, RoutedEventArgs e)
         {
-            // set is invoice selected to false
-            bIsDisplayingInvoice = false;
+            try
+            {
+                // remove the selected invoice from the Invoice table
+                // remove the selected invoice from the LineItems table
 
-            // set is displaying new invoice to false
-            bIsDisplayingNewInvoice = false;
-
-            // remove the selected invoice from the database
-
-            // clear the main screen of the canvases
-            ClearMain();
+                // clear the main screen of the selected invoice
+                ClearMain();
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
 
         }
 
@@ -325,17 +340,31 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void EditBtn_Click(object sender, RoutedEventArgs e)
         {
-            // show the options to edit the invoice
-            //      change edit canvas visibility
+            try
+            {
+                // make the edit button invisible
+                EditBtn.Visibility = Visibility.Hidden;
 
-            // show the new invoice in a canvas
-            // all items will be loaded into a combobox ---- with be current with all items in the table
-            // once combobox items are selected, they will show up in the data grid
-            // a running total of item prices must be displayed and updated
-            //      as items are entered or deleted
-            //      -- in a label below the data grid?
+                // display the editing canvas
+                EditInvoiceCanvas.Visibility = Visibility.Visible;
 
-            // change the "Edit Invoice" button visibility -- make invisible
+                // show the new invoice in a canvas
+                //  - all the items belonging to that invoice 
+                //  - should we include invoice date?
+                //  - should we include line item number?
+
+                // all items are already loaded to the combobox, no need to load them again
+
+                // once combobox items are selected, they will show up in the data grid
+                // a running total of item prices must be displayed
+                //  - updated as items are entered or deleted
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -345,10 +374,30 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void ItemsCBox2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // show item in data grid
-            
+            try
+            {
+                // display item and details from combo box in the data grid
+                itemDescDataGrid1.Items.Add(ItemsCBox2.SelectedItem);
 
-            // change the running total
+                // update the running total
+
+                ///////////////////// DOESN'T WORK -- only after the second selection, it's always one item behind
+                int sum = 0;
+                for (int i = 0; i < itemDescDataGrid1.Items.Count - 1; i++)
+                {
+                    // adds each row in the cost column together -- or it SHOULD!!
+                    sum += (Int32.Parse((itemDescDataGrid1.Columns[2].GetCellContent(itemDescDataGrid1.Items[i]) as TextBlock).Text));
+                }
+
+                // displays the total in a label
+                totalLbl2.Content = "$ " + sum + ".00";
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -358,19 +407,18 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void DelItemBtn2_Click(object sender, RoutedEventArgs e)
         {
-            // the item that was selected on the data grid is removed from the 
-            //      invoice and data grid
-
-            // set is invoice selected to false
-            bIsDisplayingInvoice = false;
-
-            // set is displaying new invoice to false
-            bIsDisplayingNewInvoice = false;
-
-            // clear the main screen of the canvases
-            ClearMain();
-
-            // update the running total
+            try
+            {
+                // make sure an item is selected in the data grid
+                // remove that item from the data grid
+                // update the total cost
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -380,14 +428,25 @@ namespace _3280groupProj
         /// <param name="e"></param>
         private void SaveBtn2_Click(object sender, RoutedEventArgs e)
         {
-            // edits the invoice in the table
-            // - total cost
+            try
+            {
+                // save edits to this invoice in the database
 
-            // update the line items table -- is this automatic with the changes to the invoice table?
-            // - the new line item indexes
-            // - the corresponding books
-            // - the corresponding price of the books
+                // update the line items table
+                // - the new line item indexes
+                // - the corresponding books
+                // - the corresponding price of the books
+            }
+            catch (Exception ex)
+            {
+                //This is the top level method so we want to handle the exception
+                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                            MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
+
+        #endregion
+
 
 
         /// <summary>
@@ -418,16 +477,37 @@ namespace _3280groupProj
         /// </summary>
         private void ClearMain()
         {
-            // reset the new invoice canvases
+            try
+            {
+                // clear the selected invoice canvases *****
+                // hide the selected invoice canvases
+                SelectedInvoiceCanvas.Visibility = Visibility.Hidden;
+                EditInvoiceCanvas.Visibility = Visibility.Hidden;
 
-            // show the new invoice canvas
+                // clear the new invoice canvas -- no items in DataGrid ******
+                // show the new invoice canvas
+                NewInvoiceCanvas.Visibility = Visibility.Visible;
 
-            // reset the selected invoice canvas
+                // clear the date textbox
+                DateBox.Text = "";
 
-            // clear all labels and text boxes
+                // show the total cost as $0.00
+                totalLbl.Content = "$0.00";
 
-            // set bool to false
+                // set invoiceID to zero -- we aren't displaying an invoice anymore
+                invoiceID = 0;
+
+                // set bool to false -- this is a new invoice
+                bIsNewInvoiceSaved = false;
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
+
 
 
         /// <summary>

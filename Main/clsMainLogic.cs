@@ -29,6 +29,8 @@ namespace _3280groupProj.Items
 
             cItem = new Item(); // instantiate the Item class
 
+            cLineItems = new LineItems(); // instantiate the LineItems class
+
             iRet = 0;   //Number of return values -- rows, basically
         }
 
@@ -52,16 +54,19 @@ namespace _3280groupProj.Items
         clsMainSQL clsSQL;
 
         /// <summary>
-        /// a class that holds the invoice variables -- do we need this?
+        /// a class that holds the invoice variables -- do I need this?
         /// </summary>
         Invoice cInvoice;
 
         /// <summary>
-        /// a class that holds the item variables
+        /// a class that holds the item variables -- do I need this?
         /// </summary>
         Item cItem;
 
-        /// DO WE NEED A LINEITEMS CLASS?
+        /// <summary>
+        /// a class that holds the LineItems variabls -- do I need this?
+        /// </summary>
+        LineItems cLineItems;
 
         /// <summary>
         /// string to hold an SQL statement
@@ -74,7 +79,6 @@ namespace _3280groupProj.Items
         public int iRet;
 
         #endregion
-
 
 
         /// <summary>
@@ -117,58 +121,6 @@ namespace _3280groupProj.Items
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
-
-
-        /// get item by ID from item table
-        public List<Item> GetItemRow(string sItem)
-        {
-            // get the Item from the data set
-            //Extract the items values and put them into the DataSet    ///////////////////////////////////// still working...
-
-            try
-            {
-                // create a list that holds Item data
-                List<Item> lstItems = new List<Item>();
-
-                // get the SQL statement that will get the Item
-                sSQL = clsSQL.GetSelectedCode(sItem);
-
-                //Extract the items and put them into the DataSet
-                ds = db.ExecuteSQLStatement(sSQL, ref iRet);
-
-                //Loop through the data and create Item classes
-                for (int i = 0; i < iRet; i++)
-                {
-                    //Create a new user object with the item information
-                    lstItems.Add(new Item
-                    {
-                        ItemCode = ds.Tables[0].Rows[i][0].ToString(),
-                        ItemDesc = ds.Tables[0].Rows[i][1].ToString(),
-                        Cost = Int32.Parse(ds.Tables[0].Rows[i][2].ToString()),
-                    });
-
-                }
-
-                // return the list of items
-                return lstItems;
-
-            }
-            catch (Exception ex)
-            {
-                //Just throw the exception -- low level method
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
-                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-
-
-
-
-
-
-
-
 
 
 

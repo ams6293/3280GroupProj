@@ -19,17 +19,16 @@ namespace _3280groupProj.Main
         /// <returns></returns>
         public string GetItems()
         {
-            return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
-        }
-
-
-        /// <summary>
-        /// returns a query to get the selected code from combo box
-        /// </summary>
-        /// <returns></returns>
-        public string GetSelectedCode(string itemID)
-        {
-            return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc WHERE ItemCode LIKE '%" + itemID + "'";
+            try
+            {
+                return "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -39,7 +38,35 @@ namespace _3280groupProj.Main
         /// <returns></returns>
         public string GetInvoice(int invoiceNum)
         {
-            return "SELECT* FROM Invoices WHERE InvoiceNum = " + invoiceNum.ToString();
+            try
+            {
+                return "SELECT InvoiceNum, InvoiceDate, TotalCost FROM Invoices WHERE InvoiceNum = " + invoiceNum.ToString();
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets all details from LineItems table and ItemDesc table by a specific invoice number
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
+        public string GetAllInvoiceDetails(int invoiceNum)
+        {
+            try
+            {
+                return "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost FROM LineItems, ItemDesc Where LineItems.ItemCode = ItemDesc.ItemCode And LineItems.InvoiceNum = " + invoiceNum.ToString();
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -49,7 +76,17 @@ namespace _3280groupProj.Main
         /// <returns></returns>
         public string DeleteInvoice(int invoiceNum)
         {
-            return "DELETE From Invoices WHERE InvoiceNum = " + invoiceNum.ToString();    // for the Invoices table
+            try
+            {
+                // for the Invoices table
+                return "DELETE From Invoices WHERE InvoiceNum = " + invoiceNum.ToString();
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -59,22 +96,80 @@ namespace _3280groupProj.Main
         /// <returns></returns>
         public string DeleteLineItem(int invoiceNum)
         {
-            return "DELETE From LineItems WHERE InvoiceNum = " + invoiceNum.ToString();     // for the LineItems table
+            try
+            {
+                // for the LineItems table
+                return "DELETE From LineItems WHERE InvoiceNum = " + invoiceNum.ToString();
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
-
-        public string DeleteInvoiceLine(int invoiceNum)
+        /// <summary>
+        /// string to update the total cost of an invoice by an invoice number
+        /// </summary>
+        /// <param name="cost"></param>
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
+        public string UpdateInvoice(int cost, int invoiceNum)
         {
-            return "DELETE From Invoices WHERE InvoiceNum = " + invoiceNum.ToString();
+            try
+            {
+                return "UPDATE Invoices SET TotalCost = " + cost.ToString() + " WHERE InvoiceNum = " + invoiceNum.ToString();
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
+        /// <summary>
+        /// string to insert a new invoice with it's items into the LineItems table
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        /// <param name="lineItemNum"></param>
+        /// <param name="itemCode"></param>
+        /// <returns></returns>
+        public string InsertLineItems(int invoiceNum, int lineItemNum, string itemCode)
+        {
+            try
+            {
+                return "INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) Values (" + invoiceNum + ", " + lineItemNum + ", '" + itemCode + "')";
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
 
-        /// update an invoice
-        /// - remove an item
-        /// - add an item
-        /// - change total cost
-        /// - delete an invoice
-
+        /// <summary>
+        /// string to insert a new invoice with it's date and total cost into the Invoice table
+        /// should the date be a string??
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
+        public string InsertInvoices(string date, int invoiceNum)
+        {
+            try
+            {
+                return "INSERT INTO Invoices (InvoiceDate, TotalCost) Values ('#" + date + "#', " + invoiceNum.ToString() + ")";
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
 
 
 

@@ -49,7 +49,7 @@ namespace _3280groupProj.Items
         /// <returns></returns>
         public string insertItem(string sItemDesc, string sCost, string sItemCode)
         {
-            string sSQL = "Insert into ItemDesc(ItemCode, ItemDesc, Cost) Values(" + sItemDesc + sCost + sItemCode + ")";
+            string sSQL = "Insert into ItemDesc(ItemCode, ItemDesc, Cost) Values(" + sItemDesc + "," + sCost + "," + sItemCode + ")";
             return sSQL;
         }
         /// <summary>
@@ -59,7 +59,7 @@ namespace _3280groupProj.Items
         /// <returns></returns>
         public string deleteItem(string sItemCode)
         {
-            string sSQL = "Delete from ItemDesc Where ItemCode =" + sItemCode;
+            string sSQL = "Delete from ItemDesc Where ItemCode = " + sItemCode;
             return sSQL;
         }
 

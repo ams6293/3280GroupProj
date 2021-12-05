@@ -34,8 +34,6 @@ namespace _3280groupProj
             // the invoice number is 0 until it is passed in and changed
             invoiceID = 0;
 
-            bIsNewInvoiceSaved = false;
-
             // load the combo boxes
             LoadComboBox();
 
@@ -62,22 +60,15 @@ namespace _3280groupProj
         clsMainLogic mainLogic;
 
         /// <summary>
-        /// used to hold the InvoiceNum of the invoice passed from main
-        /// If the there isn't a selected invoice, it's zero
+        /// a property that get the InvoiceNum of the invoice passed
+        /// from the search window
         /// </summary>
-        public static int invoiceID;    /// should it be static??
-
-        /// <summary>
-        /// holds if a new invoice has been saved
-        /// edits the invoice tables instead of adding it
-        /// </summary>
-        bool bIsNewInvoiceSaved;
+        int invoiceID { get; set; }
 
         #endregion
 
 
         #region Menu
-
 
         /// <summary>
         /// When the user clicks the "Search for Invoice" button
@@ -88,6 +79,9 @@ namespace _3280groupProj
         {
             try
             {
+                // clear the main screen of the canvases
+                ClearMain();    // if the user cancels a selection, it will show the refreshed main window
+
                 // must instantiate the search window here instead of the constructor
                 // won't work otherwise
                 winSearch = new Search();
@@ -95,16 +89,15 @@ namespace _3280groupProj
                 // close this window and open the search window
                 this.Hide();
 
-                // clear the main screen of the canvases
-                ClearMain();    // if the user cancels a selection, it will show the refreshed main window
-
                 winSearch.ShowDialog();
                 this.Show();    // this window shows again after the search window is closed
 
-
-                // if the user selects an invoice in the search window, 
-                //  the search window will call my ShowSelectedInvoice(int invoiceNum) method     
-                //  **** will talk to Amber about this ****
+                // check if an invoice is selected -- should there be a bool for this in the Search window?     ////////////////////// TALK TO AMBER
+                // like this...
+                // if (winSearch.bIsInvoiceSelected != false) { do stuff }
+                // if so, set my invoiceID variable to the invoiceID variable in the Search window
+                // like this...
+                // InvoiceID = winSearch.invoiceNum;
             }
             catch (Exception ex)
             {
@@ -166,14 +159,15 @@ namespace _3280groupProj
                 // display item and details from combo box in the data grid
                 itemDescDataGrid.Items.Add(ItemsCBox.SelectedItem);
 
-                // update the running total
-                //itemDescDataGrid.Columns[2].GetCellContent();
+                ////////////////////////////////////////////////////////////////////////////////////// Doesn't work!!! -- starts an index behind
+               int sum = 0;
+               for (int i = 0; i < itemDescDataGrid.Items.Count - 1; i++)
+                {
 
-                // getting the first cell's content in the Cost column
-                // CHECK IF NULL FIRST
-                /*object x = itemDescDataGrid.Columns[2].GetCellContent(itemDescDataGrid.Items[0]);
-                string r = x.ToString();
-                int f = Int32.Parse(r);*/
+                    sum += (Int32.Parse((itemDescDataGrid.Columns[2].GetCellContent(itemDescDataGrid.Items[i]) as TextBlock).Text)); 
+                }
+
+                totalLbl.Content = "$ " + sum + ".00";
 
 
             }
@@ -195,32 +189,17 @@ namespace _3280groupProj
             try
             {
                 // make sure an item is currently selected in the data grid
-                // the item that was selected on the data grid is removed
+                if (itemDescDataGrid.SelectedIndex >= 0)
+                {
+                    // make sure the row isn't empty
+                    if (itemDescDataGrid.SelectedItem != null)
+                    {
+                        // the item that was selected on the data grid is removed
+                        itemDescDataGrid.Items.Remove(itemDescDataGrid.SelectedItem);
+                    }
+                    // update the running total         ///////////////////////////////////////////////////////// TODO
+                }
 
-                // update the running total
-            }
-            catch (Exception ex)
-            {
-                //This is the top level method so we want to handle the exception
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                            MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// When the user tries to enter input into the date text box
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DateBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                // make sure that it's numbers and slashes only?
-                // prevent spaces, letters, special characters?
-                // how do I check if it's a read date?
-
-                // the user MUST enter a date -- show error message
             }
             catch (Exception ex)
             {
@@ -239,27 +218,28 @@ namespace _3280groupProj
         {
             try
             {
-                // check if the invoice is saved, if not:
-                // set the invoice to saved
-                // this means that the next time the save button is clicked, 
-                //      we update the table instead of add to it
-                bIsNewInvoiceSaved = true;
+                // check if there's a date selected
+                if (datePicker.SelectedDate != null)
+                {
+                    // can the user save an invoice without adding items?
 
-                // if the invoice has already been saved, update the invoice instead of adding it
+                    // all data in the invoice is added to the invoice table: -- how?       //////////////////////////////  TODO
+                    // - invoice num (automatically created)
+                    // - invoice date
+                    // - total cost
 
-                // the user cannot save the invoice without adding a date
-                // can the user save an invoice without adding items?
+                    // update the line items table
+                    // - the new invoice number
+                    // - the new line item index
+                    // - the corresponding book
+                    // - the corresponding price of the book
+                }
+                else
+                {
+                    // an error message is shown
+                    MessageBox.Show("You must select a date", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
 
-                // all data in the invoice is added to the invoice table:
-                // - invoice num (automatically created)
-                // - invoice date
-                // - total cost
-
-                // update the line items table
-                // - the new invoice number
-                // - the new line item index
-                // - the corresponding book
-                // - the corresponding price of the book
             }
             catch (Exception ex)
             {
@@ -276,29 +256,31 @@ namespace _3280groupProj
 
 
         /// <summary>
-        /// method to show the selected invoice -- CALLED WHEN USER SELECTS AN INVOICE IN THE SEARCH WINDOW
-        /// accepts the invoice number -- can then access the other elements
+        /// method to show the selected invoice
         /// </summary>
-        public void ShowSelectedInvoice(int invoiceNum)
+        public void ShowSelectedInvoice()
         {
             try
             {
-                // set the passed int number as the InvoiceId
-                invoiceNum = invoiceID;
+                // bind the selected invoice to the datagrid
+                itemDescDataGrid1.ItemsSource = mainLogic.GetSelectedInvoice(invoiceID);
 
                 // Display the selected invoice canvas
                 SelectedInvoiceCanvas.Visibility = Visibility.Visible;
                 EditBtn.Visibility = Visibility.Visible;
 
                 // load the selected data grid with the invoice details
+                // change the item source
                 //  - items
                 //  - cost
                 //  - line item number?
                 //  - date?
 
                 // change invoice number label
+                invoiceNumLbl.Content = invoiceID.ToString();
 
                 // change running total label
+                totalLbl2.Content = 0; /////////////////////////////////////////////////////////////////// TODO
             }
             catch (Exception ex)
             {
@@ -318,8 +300,8 @@ namespace _3280groupProj
         {
             try
             {
-                // remove the selected invoice from the Invoice table
-                // remove the selected invoice from the LineItems table
+                // remove the selected invoice from the database
+                mainLogic.DeleteInvoice(invoiceID);
 
                 // clear the main screen of the selected invoice
                 ClearMain();
@@ -348,16 +330,7 @@ namespace _3280groupProj
                 // display the editing canvas
                 EditInvoiceCanvas.Visibility = Visibility.Visible;
 
-                // show the new invoice in a canvas
-                //  - all the items belonging to that invoice 
-                //  - should we include invoice date?
-                //  - should we include line item number?
-
                 // all items are already loaded to the combobox, no need to load them again
-
-                // once combobox items are selected, they will show up in the data grid
-                // a running total of item prices must be displayed
-                //  - updated as items are entered or deleted
             }
             catch (Exception ex)
             {
@@ -379,7 +352,7 @@ namespace _3280groupProj
                 // display item and details from combo box in the data grid
                 itemDescDataGrid1.Items.Add(ItemsCBox2.SelectedItem);
 
-                // update the running total
+                // update the running total                         //////////////////////////////////////////////// TODO
 
                 
             }
@@ -400,9 +373,17 @@ namespace _3280groupProj
         {
             try
             {
-                // make sure an item is selected in the data grid
-                // remove that item from the data grid
-                // update the total cost
+                // make sure an item is currently selected in the data grid
+                if (itemDescDataGrid1.SelectedIndex >= 0)
+                {
+                    // make sure the row isn't empty
+                    if (itemDescDataGrid1.SelectedItem != null)
+                    {
+                        // the item that was selected on the data grid is removed
+                        itemDescDataGrid1.Items.Remove(itemDescDataGrid1.SelectedItem);
+                    }
+                    // update the running total         ///////////////////////////////////////////////////////// TODO
+                }
             }
             catch (Exception ex)
             {
@@ -427,6 +408,9 @@ namespace _3280groupProj
                 // - the new line item indexes
                 // - the corresponding books
                 // - the corresponding price of the books
+
+                // remove the editing canvas
+                // show the selected canvas
             }
             catch (Exception ex)
             {
@@ -471,25 +455,25 @@ namespace _3280groupProj
             try
             {
                 // clear the selected invoice canvases *****
+                itemDescDataGrid1.ItemsSource = null;   ////////////////////////////////////// trying this...
+                itemDescDataGrid1.Columns.Clear();
+
                 // hide the selected invoice canvases
                 SelectedInvoiceCanvas.Visibility = Visibility.Hidden;
                 EditInvoiceCanvas.Visibility = Visibility.Hidden;
 
                 // clear the new invoice canvas -- no items in DataGrid ******
+                itemDescDataGrid.ItemsSource = null;   ////////////////////////////////////// trying this...
+                itemDescDataGrid.Columns.Clear();
+
                 // show the new invoice canvas
                 NewInvoiceCanvas.Visibility = Visibility.Visible;
-
-                // clear the date textbox
-                DateBox.Text = "";
 
                 // show the total cost as $0.00
                 totalLbl.Content = "$0.00";
 
                 // set invoiceID to zero -- we aren't displaying an invoice anymore
                 invoiceID = 0;
-
-                // set bool to false -- this is a new invoice
-                bIsNewInvoiceSaved = false;
             }
             catch (Exception ex)
             {

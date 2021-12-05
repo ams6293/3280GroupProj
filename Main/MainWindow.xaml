@@ -24,8 +24,7 @@
             <Label Content="Add an Item:" Canvas.Left="262" Canvas.Top="10" FontFamily="Arial" FontSize="16"/>
             <Button x:Name="SaveBtn" Content="Save Invoice" Canvas.Left="298" Canvas.Top="210" Width="115" FontFamily="Arial" FontSize="14" Height="34" Background="#FFA1C1A0" FontWeight="Bold" Click="SaveBtn_Click"/>
             <Button x:Name="DelItemBtn" Content="Delete Item" Canvas.Left="262" Canvas.Top="96" Width="106" FontFamily="Arial" FontSize="14" Height="26" Background="#FFD1A0A0" FontWeight="Bold" Click="DelItemBtn_Click"/>
-            <Label Content="Invoice Date:" Canvas.Left="262" Canvas.Top="146" FontFamily="Arial" FontSize="14"/>
-            <TextBox x:Name="DateBox" Height="23" Canvas.Left="359" TextWrapping="Wrap" Canvas.Top="149" Width="97" PreviewKeyDown="DateBox_PreviewKeyDown"/>
+            <Label Content="Invoice Date:" Canvas.Left="257" Canvas.Top="148" FontFamily="Arial" FontSize="14"/>
             <Label Content="Total:" Canvas.Left="23" Canvas.Top="216" FontFamily="Arial" FontSize="16" RenderTransformOrigin="0.13,0.398"/>
             <Label x:Name="totalLbl" Content="$ 0.00" Canvas.Left="76" Canvas.Top="216" Height="34" Width="160" FontFamily="Arial" FontSize="16"/>
             <Label Content="Invoice Number: TBD" Canvas.Left="23" Canvas.Top="10" FontFamily="Arial" FontSize="14"/>
@@ -36,6 +35,7 @@
                     <DataGridTextColumn x:Name="costColumn" Binding="{Binding Cost}" Header="Cost" Width="SizeToHeader"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <DatePicker x:Name="datePicker" Canvas.Left="349" Canvas.Top="150" Width="102"/>
         </Canvas>
         <Canvas x:Name="SelectedInvoiceCanvas" HorizontalAlignment="Left" Height="275" Margin="80,108,0,0" VerticalAlignment="Top" Width="492" Visibility="Hidden" DataContext="{StaticResource itemDescViewSource}">
             <Label Content="Total:" Canvas.Left="23" Canvas.Top="216" FontFamily="Arial" FontSize="16" RenderTransformOrigin="0.13,0.398"/>

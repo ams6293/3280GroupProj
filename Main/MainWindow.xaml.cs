@@ -139,7 +139,7 @@ namespace _3280groupProj
                 ClearMain();
 
                 // load the combo boxes again -- the user may have changed the items
-                LoadComboBox();
+                //LoadComboBox(); -- is causing an error
             }
             catch (Exception ex)
             {
@@ -167,8 +167,15 @@ namespace _3280groupProj
                 itemDescDataGrid.Items.Add(ItemsCBox.SelectedItem);
 
                 // update the running total
+                //itemDescDataGrid.Columns[2].GetCellContent();
 
-                
+                // getting the first cell's content in the Cost column
+                // CHECK IF NULL FIRST
+                /*object x = itemDescDataGrid.Columns[2].GetCellContent(itemDescDataGrid.Items[0]);
+                string r = x.ToString();
+                int f = Int32.Parse(r);*/
+
+
             }
             catch (Exception ex)
             {
@@ -513,6 +520,11 @@ namespace _3280groupProj
             }
         }
 
+        /// <summary>
+        /// loads the window?
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 

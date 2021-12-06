@@ -24,8 +24,8 @@ namespace _3280groupProj
         /// this is a link to the business logic
         /// </summary>
         clsSearchLogic searchLogic = new clsSearchLogic();
-        int invoiceID;
-        bool hasSelectedInvoiceID = false;
+        public int invoiceID;
+        public bool hasSelectedInvoiceID = false;
         public Search()
         {
             InitializeComponent();

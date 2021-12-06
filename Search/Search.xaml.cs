@@ -53,7 +53,7 @@ namespace _3280groupProj
             //This needs to take the users selected invoice based on the InvoiceID back to the main form
             Invoice invoice = (Invoice)dgInvoices.SelectedItem;
             invoiceID = invoice.InvoiceNum;
-            testlbl.Content = invoiceID.ToString();
+            
             hasSelectedInvoiceID = true;
             
         }

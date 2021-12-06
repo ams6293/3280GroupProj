@@ -17,9 +17,7 @@
                 <MenuItem Header="Search for Invoice" Click="SearchBtn_Click"></MenuItem>
                 <MenuItem Header="Update Items" Click="ItemsBtn_Click"></MenuItem>
             </Menu>
-            <StackPanel DataContext="{StaticResource lineItemsViewSource}">
-                <Label x:Name="testlbl" Content="0"/>
-            </StackPanel>
+            <StackPanel DataContext="{StaticResource lineItemsViewSource}"/>
         </DockPanel>
         <Canvas x:Name="NewInvoiceCanvas" HorizontalAlignment="Left" Height="275" Margin="135,95,0,0" VerticalAlignment="Top" Width="492" Visibility="Visible" DataContext="{StaticResource itemDescViewSource}">
             <ComboBox x:Name="ItemsCBox" Canvas.Left="262" Canvas.Top="43" Width="172" Height="29" SelectionChanged="ItemsCBox_SelectionChanged"/>

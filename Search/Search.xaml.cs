@@ -26,6 +26,7 @@ namespace _3280groupProj
         clsSearchLogic searchLogic = new clsSearchLogic();
         public int invoiceID;
         public bool hasSelectedInvoiceID = false;
+        bool clearActivated = false;
         public Search()
         {
             InitializeComponent();
@@ -60,11 +61,13 @@ namespace _3280groupProj
 
         private void ClearBtn_Click(object sender, RoutedEventArgs e)
         {
+            clearActivated = true;
             totalChargeDropDown.SelectedIndex = -1;
             invoiceDateDropDown.SelectedIndex = -1;
-            invoiceNumberDropDown.SelectedItem = -1;
+            invoiceNumberDropDown.SelectedIndex = -1;
+            
             dgInvoices.ItemsSource = searchLogic.getInvoices();
-           
+            clearActivated = false;
             
 
 
@@ -74,7 +77,14 @@ namespace _3280groupProj
         {
             try
             {
-                setFilter();
+                if(clearActivated == false)
+                {
+                    setFilter();
+                }
+                else
+                {
+                    return;
+                }
             }
             catch (Exception ex)
             {

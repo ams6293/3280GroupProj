@@ -25,6 +25,7 @@ namespace _3280groupProj
         /// </summary>
         clsSearchLogic searchLogic = new clsSearchLogic();
         int invoiceID;
+        bool hasSelectedInvoiceID = false;
         public Search()
         {
             InitializeComponent();
@@ -34,6 +35,7 @@ namespace _3280groupProj
                 invoiceNumberDropDown.ItemsSource = searchLogic.getInvoiceNums();
                 invoiceDateDropDown.ItemsSource = searchLogic.getInvoiceDates();
                 totalChargeDropDown.ItemsSource = searchLogic.getInvoiceTotalCosts();
+                hasSelectedInvoiceID = false;
             }
             catch (Exception ex)
             {
@@ -52,6 +54,7 @@ namespace _3280groupProj
             Invoice invoice = (Invoice)dgInvoices.SelectedItem;
             invoiceID = invoice.InvoiceNum;
             testlbl.Content = invoiceID.ToString();
+            hasSelectedInvoiceID = true;
             
         }
 

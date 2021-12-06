@@ -8,15 +8,18 @@
         Title="Search" Height="450" Width="800">
     <Grid>
         <DataGrid x:Name="dgInvoices" HorizontalAlignment="Left" Height="151" Margin="71,187,0,0" VerticalAlignment="Top" Width="627"/>
-        <ComboBox x:Name="invoiceNumberDropDown" HorizontalAlignment="Left" Margin="83,102,0,0" VerticalAlignment="Top" Width="120"/>
-        <ComboBox x:Name="invoiceDateDropDown" HorizontalAlignment="Left" Margin="333,102,0,0" VerticalAlignment="Top" Width="120"/>
-        <ComboBox x:Name="totalChargeDropDown" HorizontalAlignment="Left" Margin="578,102,0,0" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="ClearBtn" Content="Cancel" HorizontalAlignment="Left" Margin="141,359,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold" Height="32" Click="ClearBtn_Click"/>
+        <StackPanel Margin="190,104,-13,293" Orientation="Horizontal" >
+            <ComboBox x:Name="invoiceNumberDropDown" HorizontalAlignment="Left" VerticalAlignment="Top" Width="134" SelectionChanged="invoiceNumberDropDown_SelectionChanged" Height="35" Margin="0,0,0,-13"/>
+            <ComboBox x:Name="invoiceDateDropDown" HorizontalAlignment="Left" VerticalAlignment="Top" Width="135" SelectionChanged="invoiceDateDropDown_SelectionChanged" Height="35" Margin="0,0,0,-13"/>
+            <ComboBox x:Name="totalChargeDropDown" HorizontalAlignment="Left" Width="136" SelectionChanged="totalChargeDropDown_SelectionChanged" Margin="0,0,0,-13"/>
+        </StackPanel>
+        <Button x:Name="ClearBtn" Content="Clear" HorizontalAlignment="Left" Margin="141,359,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold" Height="32" Click="ClearBtn_Click"/>
         <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="542,359,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold" Height="32" Click="selectBtn_Click"/>
-        <Label Content="Invoice Number:" HorizontalAlignment="Left" Margin="83,73,0,0" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Invoice Date:" HorizontalAlignment="Left" Margin="333,76,0,0" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Invoice Total:" HorizontalAlignment="Left" Margin="578,76,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Invoice Number:" HorizontalAlignment="Left" Margin="190,76,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Invoice Date:" HorizontalAlignment="Left" Margin="322,78,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Invoice Total:" HorizontalAlignment="Left" Margin="442,78,0,0" VerticalAlignment="Top" Width="120"/>
         <Label Content="Filter and Search" HorizontalAlignment="Left" Margin="322,23,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
+        <Label x:Name="testlbl" Content="0" HorizontalAlignment="Left" Margin="694,46,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

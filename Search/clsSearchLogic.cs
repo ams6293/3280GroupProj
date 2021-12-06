@@ -18,6 +18,7 @@ namespace _3280groupProj
         /// </summary>
         clsSearchSQL Sql = new clsSearchSQL();
 
+      
         /// <summary>
         /// this gets all the Invoices and adds them to a list of invoices to be displayed later
         /// </summary>
@@ -41,10 +42,10 @@ namespace _3280groupProj
                     });
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
 
-                throw e;
+                throw ex;
             }
         
             return retList;
@@ -68,10 +69,10 @@ namespace _3280groupProj
                     retList.Add(Int32.Parse(dr["InvoiceNum"].ToString()));
                 }
             }
-            catch (Exception a)
+            catch (Exception ex)
             {
 
-                throw a;
+                throw ex;
             }
            
             return retList;
@@ -94,10 +95,10 @@ namespace _3280groupProj
                     retList.Add(dr["InvoiceDate"].ToString());
                 }
             }
-            catch (Exception b)
+            catch (Exception ex)
             {
 
-                throw b;
+                throw ex;
             }
           
             return retList;
@@ -121,12 +122,136 @@ namespace _3280groupProj
                     retList.Add(Int32.Parse(dr["TotalCost"].ToString()));
                 }
             }
-            catch (Exception c)
+            catch (Exception ex)
             {
 
-                throw c;
+                throw ex;
             }
          
+            return retList;
+        }
+
+        public List<Invoice> getFilterResults(string invoiceID, string invoiceDate, string  invoiceCost)
+        {
+            int iNumRetValues = 0;
+            var retList = new List<Invoice>();
+            DataSet ds;
+            try
+            {
+                if (invoiceID == "")
+                {
+                    if (invoiceDate == "")
+                    {
+                        ds = db.ExecuteSQLStatement(Sql.SelectInvoiceDataByTotal(invoiceCost), ref iNumRetValues);
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            retList.Add(new Invoice
+                            {
+                                InvoiceNum = Int32.Parse(dr["InvoiceNum"].ToString()),
+                                InvoiceDate = dr["InvoiceDate"].ToString(),
+                                TotalCost = Int32.Parse(dr["TotalCost"].ToString())
+                            });
+                        }
+                    }
+                    else
+                    {
+                        if (invoiceCost == "")
+                        {
+                            ds = db.ExecuteSQLStatement(Sql.SelectInvoiceDataByDate(invoiceDate), ref iNumRetValues);
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                retList.Add(new Invoice
+                                {
+                                    InvoiceNum = Int32.Parse(dr["InvoiceNum"].ToString()),
+                                    InvoiceDate = dr["InvoiceDate"].ToString(),
+                                    TotalCost = Int32.Parse(dr["TotalCost"].ToString())
+                                });
+                            }
+                        }
+                        else
+                        {
+                            ds = db.ExecuteSQLStatement(Sql.SelectInvoiceDataByTotalAndDate(invoiceCost, invoiceDate), ref iNumRetValues);
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                retList.Add(new Invoice
+                                {
+                                    InvoiceNum = Int32.Parse(dr["InvoiceNum"].ToString()),
+                                    InvoiceDate = dr["InvoiceDate"].ToString(),
+                                    TotalCost = Int32.Parse(dr["TotalCost"].ToString())
+                                });
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (invoiceDate == "")
+                    {
+                        if (invoiceCost == "")
+                        {
+                            ds = db.ExecuteSQLStatement(Sql.SelectInvoiceDataByID(invoiceID), ref iNumRetValues);
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                retList.Add(new Invoice
+                                {
+                                    InvoiceNum = Int32.Parse(dr["InvoiceNum"].ToString()),
+                                    InvoiceDate = dr["InvoiceDate"].ToString(),
+                                    TotalCost = Int32.Parse(dr["TotalCost"].ToString())
+                                });
+                            }
+
+                        }
+                        else
+                        {
+                            ds = db.ExecuteSQLStatement(Sql.SelectInvoiceDataByIDAndTotal(invoiceID, invoiceCost), ref iNumRetValues);
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                retList.Add(new Invoice
+                                {
+                                    InvoiceNum = Int32.Parse(dr["InvoiceNum"].ToString()),
+                                    InvoiceDate = dr["InvoiceDate"].ToString(),
+                                    TotalCost = Int32.Parse(dr["TotalCost"].ToString())
+                                });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (invoiceCost == "")
+                        {
+
+                            ds = db.ExecuteSQLStatement(Sql.SelectInvoiceDataByIDAndDate(invoiceID, invoiceDate), ref iNumRetValues);
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                retList.Add(new Invoice
+                                {
+                                    InvoiceNum = Int32.Parse(dr["InvoiceNum"].ToString()),
+                                    InvoiceDate = dr["InvoiceDate"].ToString(),
+                                    TotalCost = Int32.Parse(dr["TotalCost"].ToString())
+                                });
+                            }
+                        }
+                        else
+                        {
+                            ds = db.ExecuteSQLStatement(Sql.SelectInvoiceDataByIDAndDateAndTotal(invoiceID, invoiceDate, invoiceCost), ref iNumRetValues);
+                            foreach (DataRow dr in ds.Tables[0].Rows)
+                            {
+                                retList.Add(new Invoice
+                                {
+                                    InvoiceNum = Int32.Parse(dr["InvoiceNum"].ToString()),
+                                    InvoiceDate = dr["InvoiceDate"].ToString(),
+                                    TotalCost = Int32.Parse(dr["TotalCost"].ToString())
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
             return retList;
         }
     }

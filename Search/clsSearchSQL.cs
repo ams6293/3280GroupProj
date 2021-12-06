@@ -24,7 +24,7 @@ namespace _3280groupProj
         /// This SQL gets all data on an invoice for a given InvoiceID.
         /// </summary>
         /// <param name="sInvoiceID">The InvoiceID for the invoice to retrieve all data.</param>
-        /// <returns>All data for the given invoice.</returns>
+        /// <returns>sql to get All data for the given invoice.</returns>
         public string SelectInvoiceDataByID(string sInvoiceID)
 
         {
@@ -53,7 +53,11 @@ namespace _3280groupProj
             string sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDate + "# AND TotalCost = " + sTotal;
             return sSQL;
         }
-
+        public string SelectInvoiceDataByIDAndTotal(string sInvoiceID, string sTotal)
+        {
+            string sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND TotalCost = " + sTotal;
+            return sSQL;
+        }
 
         /// <summary>
         /// This SQL gets all data on an invoice for a given TotalCost.

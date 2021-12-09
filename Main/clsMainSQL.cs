@@ -157,11 +157,11 @@ namespace _3280groupProj.Main
         /// <param name="date"></param>
         /// <param name="invoiceNum"></param>
         /// <returns></returns>
-        public string InsertInvoices(string date, int invoiceNum)
+        public string InsertInvoices(string date, int totalCost)
         {
             try
             {
-                return "INSERT INTO Invoices (InvoiceDate, TotalCost) Values ('#" + date + "#', " + invoiceNum.ToString() + ")";
+                return "INSERT INTO Invoices (InvoiceDate, TotalCost) Values ('#" + date + "#', " + totalCost.ToString() + ")";
             }
             catch (Exception ex)
             {

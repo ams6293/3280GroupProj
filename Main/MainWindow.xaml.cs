@@ -92,12 +92,16 @@ namespace _3280groupProj
                 winSearch.ShowDialog();
                 this.Show();    // this window shows again after the search window is closed
 
-                // check if an invoice is selected -- should there be a bool for this in the Search window?     ////////////////////// TALK TO AMBER
-                // like this...
-                // if (winSearch.bIsInvoiceSelected != false) { do stuff }
-                // if so, set my invoiceID variable to the invoiceID variable in the Search window
-                // like this...
-                // InvoiceID = winSearch.invoiceNum;
+                // check if an invoice is selected
+                if (winSearch.hasSelectedInvoiceID != false)
+                {
+                    // if so, set my invoiceID variable to the invoiceID variable in the Search window
+                    // like this...
+                    invoiceID = winSearch.invoiceID;
+
+                    // show the selected invoice
+                    ShowSelectedInvoice();
+                }
             }
             catch (Exception ex)
             {
@@ -116,6 +120,9 @@ namespace _3280groupProj
         {
             try
             {
+                // clear the main screen of the canvases
+                ClearMain();
+
                 // must instantiate the item window here instead of the constructor
                 // won't work otherwise
                 winItem = new Book();
@@ -123,16 +130,12 @@ namespace _3280groupProj
                 // close this window and open the items window
                 this.Hide();
 
-                
-
+                // show the main window again when the items window closes
                 winItem.ShowDialog();
                 this.Show();
 
-                // clear the main screen of the canvases
-                ClearMain();
-
-                // load the combo boxes again -- the user may have changed the items
-                //LoadComboBox(); -- is causing an error
+                ///////////////////////////////////////////////////////////////// I need to reload the combobox here, but I keep getting an error when I try
+                LoadComboBox();
             }
             catch (Exception ex)
             {
@@ -228,7 +231,7 @@ namespace _3280groupProj
                     // - invoice date
                     // - total cost
 
-                    // update the line items table
+                    // Insert into the line items table ------ with a loop?
                     // - the new invoice number
                     // - the new line item index
                     // - the corresponding book
@@ -265,16 +268,15 @@ namespace _3280groupProj
                 // bind the selected invoice to the datagrid
                 itemDescDataGrid1.ItemsSource = mainLogic.GetSelectedInvoice(invoiceID);
 
+                // hide the new invoice
+                NewInvoiceCanvas.Visibility = Visibility.Hidden;
+
                 // Display the selected invoice canvas
                 SelectedInvoiceCanvas.Visibility = Visibility.Visible;
                 EditBtn.Visibility = Visibility.Visible;
 
                 // load the selected data grid with the invoice details
-                // change the item source
-                //  - items
-                //  - cost
-                //  - line item number?
-                //  - date?
+                itemDescDataGrid1.ItemsSource = mainLogic.GetSelectedInvoice(invoiceID);
 
                 // change invoice number label
                 invoiceNumLbl.Content = invoiceID.ToString();
@@ -349,8 +351,17 @@ namespace _3280groupProj
         {
             try
             {
-                // display item and details from combo box in the data grid
-                itemDescDataGrid1.Items.Add(ItemsCBox2.SelectedItem);
+                // create a copy of the list that makes up the item source
+                var lstItem = (IList<Item>)itemDescDataGrid1.ItemsSource;
+
+                // null the datagrid? YES
+                itemDescDataGrid1.ItemsSource = null;
+
+                // add the selected item to that list
+                lstItem.Add((Item)ItemsCBox2.SelectedItem);
+
+                // bind the datagrid to the new list
+                itemDescDataGrid1.ItemsSource = lstItem;
 
                 // update the running total                         //////////////////////////////////////////////// TODO
 
@@ -379,8 +390,17 @@ namespace _3280groupProj
                     // make sure the row isn't empty
                     if (itemDescDataGrid1.SelectedItem != null)
                     {
-                        // the item that was selected on the data grid is removed
-                        itemDescDataGrid1.Items.Remove(itemDescDataGrid1.SelectedItem);
+                        // create a copy of the list that makes up the item source
+                        var lstItem = (IList<Item>)itemDescDataGrid1.ItemsSource;
+
+                        // null the datagrid? YES
+                        itemDescDataGrid1.ItemsSource = null;
+
+                        // remove the selected item from the list copy
+                        lstItem.Remove((Item)itemDescDataGrid1.SelectedItem);   ////////////////////////////////// Doesn't work....
+
+                        // bind the datagrid to the new list
+                        itemDescDataGrid1.ItemsSource = lstItem;
                     }
                     // update the running total         ///////////////////////////////////////////////////////// TODO
                 }
@@ -402,7 +422,7 @@ namespace _3280groupProj
         {
             try
             {
-                // save edits to this invoice in the database
+                // save edits to this invoice in the database   //////////////////////////////////////////////// TODO
 
                 // update the line items table
                 // - the new line item indexes
@@ -431,8 +451,26 @@ namespace _3280groupProj
         {
             try
             {
+                // try clearing the combo boxes first??
+                /*ItemsCBox.SelectedIndex = -1;
+                ItemsCBox.Text = "";
+                ItemsCBox.ItemsSource = null;
+                ItemsCBox2.SelectedIndex = -1;
+                ItemsCBox2.Text = "";
+                ItemsCBox2.ItemsSource = null;*/
+
+                //trying this...........................
+                ItemsCBox.SelectedIndex = -1;
+                //ItemsCBox.Items.Clear();
+                ItemsCBox.ItemsSource = null;
+
                 // displays list of items in the New Invoice combo box
                 ItemsCBox.ItemsSource = mainLogic.GetItems();
+
+                // trying this..........................
+                ItemsCBox2.SelectedIndex = -1;
+                //ItemsCBox2.Items.Clear();
+                ItemsCBox2.ItemsSource = null;
 
                 // displays list of items in the New Invoice combo box
                 ItemsCBox2.ItemsSource = mainLogic.GetItems();
@@ -454,17 +492,17 @@ namespace _3280groupProj
         {
             try
             {
-                // clear the selected invoice canvases *****
-                itemDescDataGrid1.ItemsSource = null;   ////////////////////////////////////// trying this...
-                itemDescDataGrid1.Columns.Clear();
+                // clear the selected invoice canvases
+                itemDescDataGrid1.ItemsSource = null;
+                itemDescDataGrid1.Items.Clear();
 
-                // hide the selected invoice canvases
+                // hide the selected invoice canvases & button
                 SelectedInvoiceCanvas.Visibility = Visibility.Hidden;
                 EditInvoiceCanvas.Visibility = Visibility.Hidden;
+                EditBtn.Visibility = Visibility.Hidden;
 
-                // clear the new invoice canvas -- no items in DataGrid ******
-                itemDescDataGrid.ItemsSource = null;   ////////////////////////////////////// trying this...
-                itemDescDataGrid.Columns.Clear();
+                // clear the new invoice canvas -- no items in DataGrid
+                itemDescDataGrid.Items.Clear();
 
                 // show the new invoice canvas
                 NewInvoiceCanvas.Visibility = Visibility.Visible;
@@ -474,6 +512,10 @@ namespace _3280groupProj
 
                 // set invoiceID to zero -- we aren't displaying an invoice anymore
                 invoiceID = 0;
+
+                // reload the combo boxes?? -- struggling with the Items window
+                //LoadComboBox();
+                
             }
             catch (Exception ex)
             {

@@ -30,6 +30,7 @@ namespace _3280groupProj
             // initialize attributes
             winItem = new Book();
             mainLogic = new clsMainLogic();
+            sum = 0;
 
             // the invoice number is 0 until it is passed in and changed
             invoiceID = 0;
@@ -64,6 +65,11 @@ namespace _3280groupProj
         /// from the search window
         /// </summary>
         int invoiceID { get; set; }
+
+        /// <summary>
+        /// holds the running total
+        /// </summary>
+        int sum;
 
         #endregion
 
@@ -162,17 +168,12 @@ namespace _3280groupProj
                 // display item and details from combo box in the data grid
                 itemDescDataGrid.Items.Add(ItemsCBox.SelectedItem);
 
-                ////////////////////////////////////////////////////////////////////////////////////// Doesn't work!!! -- starts an index behind
-               int sum = 0;
-               for (int i = 0; i < itemDescDataGrid.Items.Count - 1; i++)
-                {
+                // update the running total
+                var item = ((sender as ComboBox).SelectedItem as Item);
+                sum += item.Cost;
 
-                    sum += (Int32.Parse((itemDescDataGrid.Columns[2].GetCellContent(itemDescDataGrid.Items[i]) as TextBlock).Text)); 
-                }
-
+                // display the running total
                 totalLbl.Content = "$ " + sum + ".00";
-
-
             }
             catch (Exception ex)
             {
@@ -197,10 +198,16 @@ namespace _3280groupProj
                     // make sure the row isn't empty
                     if (itemDescDataGrid.SelectedItem != null)
                     {
+                        // update the running total
+                        var item = itemDescDataGrid.SelectedItem as Item;
+                        sum -= item.Cost;
+
                         // the item that was selected on the data grid is removed
                         itemDescDataGrid.Items.Remove(itemDescDataGrid.SelectedItem);
                     }
-                    // update the running total         ///////////////////////////////////////////////////////// TODO
+
+                    // display the new total
+                    totalLbl.Content = "$ " + sum + ".00";
                 }
 
             }
@@ -281,8 +288,11 @@ namespace _3280groupProj
                 // change invoice number label
                 invoiceNumLbl.Content = invoiceID.ToString();
 
+                // get the total cost of the invoice
+                sum = mainLogic.GetCost(invoiceID);
+
                 // change running total label
-                totalLbl2.Content = 0; /////////////////////////////////////////////////////////////////// TODO
+                totalLbl2.Content = "$ " + sum + ".00";
             }
             catch (Exception ex)
             {
@@ -363,9 +373,14 @@ namespace _3280groupProj
                 // bind the datagrid to the new list
                 itemDescDataGrid1.ItemsSource = lstItem;
 
-                // update the running total                         //////////////////////////////////////////////// TODO
+                // update the running total
+                var item = ((sender as ComboBox).SelectedItem as Item);
+                sum += item.Cost;
 
-                
+                // display the running total
+                totalLbl2.Content = "$ " + sum + ".00";
+
+
             }
             catch (Exception ex)
             {
@@ -390,19 +405,24 @@ namespace _3280groupProj
                     // make sure the row isn't empty
                     if (itemDescDataGrid1.SelectedItem != null)
                     {
+                        // update the running total
+                        var item = itemDescDataGrid1.SelectedItem as Item;
+                        sum -= item.Cost;
+
                         // create a copy of the list that makes up the item source
                         var lstItem = (IList<Item>)itemDescDataGrid1.ItemsSource;
 
                         // null the datagrid? YES
                         itemDescDataGrid1.ItemsSource = null;
 
-                        // remove the selected item from the list copy
-                        lstItem.Remove((Item)itemDescDataGrid1.SelectedItem);   ////////////////////////////////// Doesn't work....
+                        // remove the selected item from the list
+                        lstItem.Remove(item);
 
-                        // bind the datagrid to the new list
+                        // bind the datagrid to the list copy
                         itemDescDataGrid1.ItemsSource = lstItem;
                     }
-                    // update the running total         ///////////////////////////////////////////////////////// TODO
+                    // display the running total
+                    totalLbl2.Content = "$ " + sum + ".00";
                 }
             }
             catch (Exception ex)
@@ -512,6 +532,9 @@ namespace _3280groupProj
 
                 // set invoiceID to zero -- we aren't displaying an invoice anymore
                 invoiceID = 0;
+
+                // set the total cost to zero
+                sum = 0;
 
                 // reload the combo boxes?? -- struggling with the Items window
                 //LoadComboBox();

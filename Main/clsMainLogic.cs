@@ -173,6 +173,29 @@ namespace _3280groupProj.Items
             }
         }
 
+        /// <summary>
+        /// Returns the cost of a given invoice
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        public int GetCost(int invoiceNum)
+        {
+            try
+            {
+                // get the string to return the total cost of that invoice
+                sSQL = clsSQL.GetInvoiceCost(invoiceNum);
+                string x = db.ExecuteScalarSQL(sSQL);
+
+                // return the invoice
+                return Int32.Parse(x);
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
 
         /// <summary>
         /// Deletes an invoice from the entire database given the invoice number

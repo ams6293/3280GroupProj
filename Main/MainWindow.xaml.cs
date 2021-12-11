@@ -141,7 +141,7 @@ namespace _3280groupProj
                 this.Show();
 
                 ///////////////////////////////////////////////////////////////// I need to reload the combobox here, but I keep getting an error when I try
-                LoadComboBox();
+                //LoadComboBox();
             }
             catch (Exception ex)
             {
@@ -231,18 +231,17 @@ namespace _3280groupProj
                 // check if there's a date selected
                 if (datePicker.SelectedDate != null)
                 {
-                    // can the user save an invoice without adding items?
+                    // get the date in the proper format
+                    string date = datePicker.SelectedDate.Value.Date.ToShortDateString();
 
-                    // all data in the invoice is added to the invoice table: -- how?       //////////////////////////////  TODO
-                    // - invoice num (automatically created)
-                    // - invoice date
-                    // - total cost
+                    // convert all items in the datagrid to a list
+                    var list = itemDescDataGrid.Items.OfType<Item>();
 
-                    // Insert into the line items table ------ with a loop?
-                    // - the new invoice number
-                    // - the new line item index
-                    // - the corresponding book
-                    // - the corresponding price of the book
+                    // insert all of the items into the Invoice and LineItems tables -- and get the new Invoice ID
+                    invoiceID = mainLogic.InsertInvoice(list.ToList(), invoiceID, sum, date);
+
+                    // then show selected invoice
+                    ShowSelectedInvoice();
                 }
                 else
                 {
@@ -442,15 +441,17 @@ namespace _3280groupProj
         {
             try
             {
-                // save edits to this invoice in the database   //////////////////////////////////////////////// TODO
-
-                // update the line items table
-                // - the new line item indexes
-                // - the corresponding books
-                // - the corresponding price of the books
-
                 // remove the editing canvas
-                // show the selected canvas
+                EditInvoiceCanvas.Visibility = Visibility.Hidden;
+
+                // convert all items in the datagrid to a list
+                var list = itemDescDataGrid1.Items.OfType<Item>();
+
+                // update the Invoice and LineItems tables
+                mainLogic.UpdateInvoice(list.ToList(), invoiceID, sum);
+
+                // then show selected invoice
+                ShowSelectedInvoice();
             }
             catch (Exception ex)
             {
@@ -477,20 +478,20 @@ namespace _3280groupProj
                 ItemsCBox.ItemsSource = null;
                 ItemsCBox2.SelectedIndex = -1;
                 ItemsCBox2.Text = "";
-                ItemsCBox2.ItemsSource = null;*/
+                ItemsCBox2.ItemsSource = null;
 
                 //trying this...........................
                 ItemsCBox.SelectedIndex = -1;
-                //ItemsCBox.Items.Clear();
-                ItemsCBox.ItemsSource = null;
+                ItemsCBox.Items.Clear();
+                ItemsCBox.ItemsSource = null;*/
 
                 // displays list of items in the New Invoice combo box
                 ItemsCBox.ItemsSource = mainLogic.GetItems();
 
-                // trying this..........................
+                /* trying this..........................
                 ItemsCBox2.SelectedIndex = -1;
-                //ItemsCBox2.Items.Clear();
-                ItemsCBox2.ItemsSource = null;
+                ItemsCBox2.Items.Clear();
+                ItemsCBox2.ItemsSource = null;*/
 
                 // displays list of items in the New Invoice combo box
                 ItemsCBox2.ItemsSource = mainLogic.GetItems();

@@ -159,6 +159,11 @@ namespace _3280groupProj.Main
         {
             try
             {
+                // check if the item code is Ender's Game -- it has an apostrophe
+                if (itemCode == "Ender's Game")
+                {
+                    itemCode = "Ender''s Game";
+                }
                 return "INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) Values (" + invoiceNum + ", " + lineItemNum + ", '" + itemCode + "')";
             }
             catch (Exception ex)
@@ -171,16 +176,16 @@ namespace _3280groupProj.Main
 
         /// <summary>
         /// string to insert a new invoice with it's date and total cost into the Invoice table
-        /// should the date be a string??
         /// </summary>
         /// <param name="date"></param>
         /// <param name="invoiceNum"></param>
         /// <returns></returns>
-        public string InsertInvoices(string date, int totalCost)
+        public string InsertInvoices(string date, int totalCost, string invoiceNum)
         {
             try
             {
-                return "INSERT INTO Invoices (InvoiceDate, TotalCost) Values ('#" + date + "#', " + totalCost.ToString() + ")";
+                return "INSERT INTO Invoices (InvoiceNum, InvoiceDate, TotalCost) Values (" + invoiceNum + ", #" + date + "#, " + totalCost.ToString() + ")";
+
             }
             catch (Exception ex)
             {
@@ -190,7 +195,25 @@ namespace _3280groupProj.Main
             }
         }
 
-
+        /// <summary>
+        /// String to return an invoice number given the date and total cost
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
+        public string GetInvoiceNumber()
+        {
+            try
+            {
+                return "SELECT (MAX(InvoiceNum) + 1) FROM Invoices";
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
 
     }
 }

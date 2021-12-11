@@ -109,7 +109,6 @@ namespace _3280groupProj.Items
                         Cost = Int32.Parse(ds.Tables[0].Rows[i][2].ToString()),
 
                     });
-
                 }
                 // return the list of items
                 return lstItems;
@@ -121,15 +120,6 @@ namespace _3280groupProj.Items
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
-
-
-        // method to add an invoice to the database -- Invoice AND LineItems
-
-
-        // method to update an item in the database -- Invoice AND LineItems
-
-
 
         /// <summary>
         /// Returns a list of items of an invoice given the invoices ID
@@ -164,6 +154,80 @@ namespace _3280groupProj.Items
 
                 // return the list of items in that invoice
                 return lstInvoice;
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Inserts a new invoice into the database, returns the invoice number
+        /// </summary>
+        /// <param name="lstItem"></param>
+        /// <param name="invoiceNum"></param>
+        /// <param name="cost"></param>
+        /// <param name="date"></param>
+        public int InsertInvoice(List<Item> lstItem, int invoiceNum, int cost, string date)
+        {
+            try
+            {
+                // get that invoice number from the cost and date
+                sSQL = clsSQL.GetInvoiceNumber();
+                string sID = db.ExecuteScalarSQL(sSQL); // storing the invoice ID
+
+                // add the cost and the date to the invoice table
+                sSQL = clsSQL.InsertInvoices(date, cost, sID);
+                db.ExecuteNonQuery(sSQL);
+
+                // loop through the list of items, adding them to the LineItems table --> index = the lineItemNumber -- i is the index
+                for (int i = 0; i < lstItem.Count(); i++)
+                {
+                    sSQL = clsSQL.InsertLineItems(Int32.Parse(sID), i, lstItem[i].ItemCode.ToString());
+                    db.ExecuteNonQuery(sSQL);
+                }
+
+                // return the invoice number of the new invoice
+                return Int32.Parse(sID);
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates an existing invoice in the Invoice and LineItems tables
+        /// </summary>
+        /// <param name="lstItem"></param>
+        /// <param name="invoiceNum"></param>
+        /// <param name="cost"></param>
+        public void UpdateInvoice(List<Item> lstItem, int invoiceNum, int cost)
+        {
+            try
+            {
+                // delete all of the LineItem values for that invoice
+                // so that deleted items in the datagrid get deleted in the table too
+                sSQL = clsSQL.DeleteLineItem(invoiceNum);
+
+                // delete the invoice from the LineItems table
+                db.ExecuteNonQuery(sSQL);
+
+                // insert all of the new LineItem values for that invoice
+                // loop through the list of items, adding them to the LineItems table --> index = the lineItemNumber -- i is the index
+                for (int i = 0; i < lstItem.Count(); i++)
+                {
+                    sSQL = clsSQL.InsertLineItems(invoiceNum, i, lstItem[i].ItemCode.ToString());
+                    db.ExecuteNonQuery(sSQL);
+                }
+
+                // update the cost of that invoice
+                sSQL = clsSQL.UpdateInvoice(cost, invoiceNum);
+                db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {

@@ -122,32 +122,110 @@ namespace _3280groupProj.Items
             }
         }
 
-        /*
-         * IGNORE THIS FOR NOW 
-         * 
-         * ///////////////////// DOESN'T WORK -- only after the second selection, it's always one item behind
-                int sum = 0;
-                for (int i = 0; i < itemDescDataGrid.Items.Count - 1; i++)
+
+
+        // method to add an invoice to the database -- Invoice AND LineItems
+
+
+        // method to update an item in the database -- Invoice AND LineItems
+
+
+
+        /// <summary>
+        /// Returns a list of items of an invoice given the invoices ID
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
+        public List<Item> GetSelectedInvoice(int invoiceNum)
+        {
+            try
+            {
+                // create the list of items
+                List<Item> lstInvoice = new List<Item>();
+
+                // get the SQL statement
+                sSQL = clsSQL.GetAllInvoiceDetails(invoiceNum);
+
+                //Extract the items and put them into the DataSet
+                ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+
+                //Loop through the data and create Item classes
+                for (int i = 0; i < iRet; i++)
                 {
-                    sum += (Int32.Parse((itemDescDataGrid.Columns[2].GetCellContent(itemDescDataGrid.Items[i]) as TextBlock).Text));
+                    //Create a new user object with the item information
+                    lstInvoice.Add(new Item
+                    {
+                        ItemCode = ds.Tables[0].Rows[i][0].ToString(),
+                        ItemDesc = ds.Tables[0].Rows[i][1].ToString(),
+                        Cost = Int32.Parse(ds.Tables[0].Rows[i][2].ToString()),
+
+                    });
                 }
 
-                totalLbl.Content = "$ " + sum + ".00";
-         */
+                // return the list of items in that invoice
+                return lstInvoice;
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
 
-        /*
-         * ///////////////////// DOESN'T WORK -- only after the second selection, it's always one item behind
-                int sum = 0;
-                for (int i = 0; i < itemDescDataGrid1.Items.Count - 1; i++)
-                {
-                    // adds each row in the cost column together -- or it SHOULD!!
-                    sum += (Int32.Parse((itemDescDataGrid1.Columns[2].GetCellContent(itemDescDataGrid1.Items[i]) as TextBlock).Text));
-                }
+        /// <summary>
+        /// Returns the cost of a given invoice
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        public int GetCost(int invoiceNum)
+        {
+            try
+            {
+                // get the string to return the total cost of that invoice
+                sSQL = clsSQL.GetInvoiceCost(invoiceNum);
+                string x = db.ExecuteScalarSQL(sSQL);
 
-                // displays the total in a label
-                totalLbl2.Content = "$ " + sum + ".00";
-         * 
-         */
+                // return the invoice
+                return Int32.Parse(x);
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Deletes an invoice from the entire database given the invoice number
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        public void DeleteInvoice (int invoiceNum)
+        {
+            try
+            {
+                // get the string to remove the invoice from the LineItems table    // DO THIS FIRST!!
+                sSQL = clsSQL.DeleteLineItem(invoiceNum);
+
+                // delete the invoice from the LineItems table
+                db.ExecuteNonQuery(sSQL);
+
+                // get the string to remove the invoice from the Invoice table
+                sSQL = clsSQL.DeleteInvoice(invoiceNum);
+
+                // delete the invoice from the Invoice table
+                db.ExecuteNonQuery(sSQL);
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+
 
 
 

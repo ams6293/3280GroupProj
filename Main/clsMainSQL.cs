@@ -51,6 +51,25 @@ namespace _3280groupProj.Main
         }
 
         /// <summary>
+        /// returns a query to get an invoice total cost by the invoice number
+        /// </summary>
+        /// <param name="invoiceNum"></param>
+        /// <returns></returns>
+        public string GetInvoiceCost(int invoiceNum)
+        {
+            try
+            {
+                return "SELECT TotalCost FROM Invoices WHERE InvoiceNum = " + invoiceNum.ToString();
+            }
+            catch (Exception ex)
+            {
+                //Just throw the exception -- low level method
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Gets all details from LineItems table and ItemDesc table by a specific invoice number
         /// </summary>
         /// <param name="invoiceNum"></param>
@@ -157,11 +176,11 @@ namespace _3280groupProj.Main
         /// <param name="date"></param>
         /// <param name="invoiceNum"></param>
         /// <returns></returns>
-        public string InsertInvoices(string date, int invoiceNum)
+        public string InsertInvoices(string date, int totalCost)
         {
             try
             {
-                return "INSERT INTO Invoices (InvoiceDate, TotalCost) Values ('#" + date + "#', " + invoiceNum.ToString() + ")";
+                return "INSERT INTO Invoices (InvoiceDate, TotalCost) Values ('#" + date + "#', " + totalCost.ToString() + ")";
             }
             catch (Exception ex)
             {

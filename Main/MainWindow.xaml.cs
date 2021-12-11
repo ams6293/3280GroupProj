@@ -138,10 +138,14 @@ namespace _3280groupProj
 
                 // show the main window again when the items window closes
                 winItem.ShowDialog();
+
+                //this.ItemsCBox.SelectedIndex = -1;
+
                 this.Show();
 
                 ///////////////////////////////////////////////////////////////// I need to reload the combobox here, but I keep getting an error when I try
-                //LoadComboBox();
+                LoadComboBox();
+                //ItemsCBox.Items.Refresh();  // this does nothing...
             }
             catch (Exception ex)
             {
@@ -530,6 +534,9 @@ namespace _3280groupProj
 
                 // show the total cost as $0.00
                 totalLbl.Content = "$0.00";
+
+                // clear the selected date
+                datePicker.SelectedDate = null;
 
                 // set invoiceID to zero -- we aren't displaying an invoice anymore
                 invoiceID = 0;

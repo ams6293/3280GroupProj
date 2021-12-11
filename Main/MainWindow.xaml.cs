@@ -26,7 +26,6 @@ namespace _3280groupProj
         {
             InitializeComponent();
 
-
             // initialize attributes
             winItem = new Book();
             mainLogic = new clsMainLogic();
@@ -138,8 +137,6 @@ namespace _3280groupProj
 
                 // show the main window again when the items window closes
                 winItem.ShowDialog();
-
-                //this.ItemsCBox.SelectedIndex = -1;
 
                 this.Show();
 

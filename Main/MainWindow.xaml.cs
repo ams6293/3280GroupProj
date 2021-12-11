@@ -30,6 +30,8 @@ namespace _3280groupProj
             winItem = new Book();
             mainLogic = new clsMainLogic();
             sum = 0;
+            bIsEditing = false;
+            bIsClearingBox = false;
 
             // the invoice number is 0 until it is passed in and changed
             invoiceID = 0;
@@ -69,6 +71,16 @@ namespace _3280groupProj
         /// holds the running total
         /// </summary>
         int sum;
+
+        /// <summary>
+        /// holds if an invoice is being edited
+        /// </summary>
+        bool bIsEditing;
+
+        /// <summary>
+        /// holds whether we are clearing a combobox
+        /// </summary>
+        bool bIsClearingBox;
 
         #endregion
 
@@ -125,24 +137,26 @@ namespace _3280groupProj
         {
             try
             {
-                // clear the main screen of the canvases
-                ClearMain();
+                if (bIsEditing == false)
+                {
+                    // clear the main screen of the canvases
+                    ClearMain();
 
-                // must instantiate the item window here instead of the constructor
-                // won't work otherwise
-                winItem = new Book();
+                    // must instantiate the item window here instead of the constructor
+                    // won't work otherwise
+                    winItem = new Book();
 
-                // close this window and open the items window
-                this.Hide();
+                    // close this window and open the items window
+                    this.Hide();
+                    winItem.ShowDialog();
 
-                // show the main window again when the items window closes
-                winItem.ShowDialog();
+                    // show the main window again when the items window closes
+                    this.Show();
 
-                this.Show();
-
-                ///////////////////////////////////////////////////////////////// I need to reload the combobox here, but I keep getting an error when I try
-                LoadComboBox();
-                //ItemsCBox.Items.Refresh();  // this does nothing...
+                    // reload the combo boxes after exiting the window -- items may have changed
+                    LoadComboBox();
+                }
+                // else, do nothing
             }
             catch (Exception ex)
             {
@@ -166,15 +180,21 @@ namespace _3280groupProj
         {
             try
             {
-                // display item and details from combo box in the data grid
-                itemDescDataGrid.Items.Add(ItemsCBox.SelectedItem);
+                if (bIsClearingBox == false)
+                {
+                    // display item and details from combo box in the data grid
+                    itemDescDataGrid.Items.Add(ItemsCBox.SelectedItem);
 
-                // update the running total
-                var item = ((sender as ComboBox).SelectedItem as Item);
-                sum += item.Cost;
+                    // update the running total
+                    var item = ((sender as ComboBox).SelectedItem as Item);
+                    sum += item.Cost;
 
-                // display the running total
-                totalLbl.Content = "$ " + sum + ".00";
+                    // display the running total
+                    totalLbl.Content = "$ " + sum + ".00";
+
+                    // an invoice is being edited
+                    bIsEditing = true;
+                }
             }
             catch (Exception ex)
             {
@@ -197,7 +217,7 @@ namespace _3280groupProj
                 if (itemDescDataGrid.SelectedIndex >= 0)
                 {
                     // make sure the row isn't empty
-                    if (itemDescDataGrid.SelectedItem != null)
+                    if (itemDescDataGrid.SelectedItem != null && bIsClearingBox == false)
                     {
                         // update the running total
                         var item = itemDescDataGrid.SelectedItem as Item;
@@ -206,11 +226,9 @@ namespace _3280groupProj
                         // the item that was selected on the data grid is removed
                         itemDescDataGrid.Items.Remove(itemDescDataGrid.SelectedItem);
                     }
-
                     // display the new total
                     totalLbl.Content = "$ " + sum + ".00";
                 }
-
             }
             catch (Exception ex)
             {
@@ -230,7 +248,7 @@ namespace _3280groupProj
             try
             {
                 // check if there's a date selected
-                if (datePicker.SelectedDate != null)
+                if (datePicker.SelectedDate != null && bIsClearingBox == false)
                 {
                     // get the date in the proper format
                     string date = datePicker.SelectedDate.Value.Date.ToShortDateString();
@@ -241,6 +259,12 @@ namespace _3280groupProj
                     // insert all of the items into the Invoice and LineItems tables -- and get the new Invoice ID
                     invoiceID = mainLogic.InsertInvoice(list.ToList(), invoiceID, sum, date);
 
+                    // reload the combo boxes
+                    LoadComboBox();
+
+                    // an invoice is NOT being edited
+                    bIsEditing = false;
+
                     // then show selected invoice
                     ShowSelectedInvoice();
                 }
@@ -249,7 +273,6 @@ namespace _3280groupProj
                     // an error message is shown
                     MessageBox.Show("You must select a date", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
             }
             catch (Exception ex)
             {
@@ -302,7 +325,6 @@ namespace _3280groupProj
             }
         }
 
-
         /// <summary>
         /// When the user clicks the "Delete Invoice" button
         /// </summary>
@@ -317,6 +339,9 @@ namespace _3280groupProj
 
                 // clear the main screen of the selected invoice
                 ClearMain();
+
+                // an invoice is NOT being edited
+                bIsEditing = false;
             }
             catch (Exception ex)
             {
@@ -324,7 +349,6 @@ namespace _3280groupProj
                 HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
-
         }
 
         /// <summary>
@@ -341,6 +365,12 @@ namespace _3280groupProj
 
                 // display the editing canvas
                 EditInvoiceCanvas.Visibility = Visibility.Visible;
+
+                // an invoice is being edited
+                bIsEditing = true;
+
+                // make sure the comboboxes are reloaded
+                LoadComboBox();
 
                 // all items are already loaded to the combobox, no need to load them again
             }
@@ -361,26 +391,28 @@ namespace _3280groupProj
         {
             try
             {
-                // create a copy of the list that makes up the item source
-                var lstItem = (IList<Item>)itemDescDataGrid1.ItemsSource;
+                // make sure the we have something in the comboboxes
+                if (bIsClearingBox == false)
+                {
+                    // create a copy of the list that makes up the item source
+                    var lstItem = (IList<Item>)itemDescDataGrid1.ItemsSource;
 
-                // null the datagrid? YES
-                itemDescDataGrid1.ItemsSource = null;
+                    // null the datagrid? YES
+                    itemDescDataGrid1.ItemsSource = null;
 
-                // add the selected item to that list
-                lstItem.Add((Item)ItemsCBox2.SelectedItem);
+                    // add the selected item to that list
+                    lstItem.Add((Item)ItemsCBox2.SelectedItem);
 
-                // bind the datagrid to the new list
-                itemDescDataGrid1.ItemsSource = lstItem;
+                    // bind the datagrid to the new list
+                    itemDescDataGrid1.ItemsSource = lstItem;
 
-                // update the running total
-                var item = ((sender as ComboBox).SelectedItem as Item);
-                sum += item.Cost;
+                    // update the running total
+                    var item = ((sender as ComboBox).SelectedItem as Item);
+                    sum += item.Cost;
 
-                // display the running total
-                totalLbl2.Content = "$ " + sum + ".00";
-
-
+                    // display the running total
+                    totalLbl2.Content = "$ " + sum + ".00";
+                }
             }
             catch (Exception ex)
             {
@@ -453,6 +485,9 @@ namespace _3280groupProj
 
                 // then show selected invoice
                 ShowSelectedInvoice();
+
+                // an item is NOT being edited
+                bIsEditing = false;
             }
             catch (Exception ex)
             {
@@ -465,7 +500,6 @@ namespace _3280groupProj
         #endregion
 
 
-
         /// <summary>
         /// method to load the items to the combo boxes
         /// </summary>
@@ -473,29 +507,21 @@ namespace _3280groupProj
         {
             try
             {
-                // try clearing the combo boxes first??
-                /*ItemsCBox.SelectedIndex = -1;
-                ItemsCBox.Text = "";
-                ItemsCBox.ItemsSource = null;
-                ItemsCBox2.SelectedIndex = -1;
-                ItemsCBox2.Text = "";
-                ItemsCBox2.ItemsSource = null;
-
-                //trying this...........................
+                // making sure the combo boxes are emptied before being filled
+                // I think only the New Invoice combo box needs this
+                bIsClearingBox = true;
                 ItemsCBox.SelectedIndex = -1;
-                ItemsCBox.Items.Clear();
-                ItemsCBox.ItemsSource = null;*/
+                ItemsCBox.SelectedItem = null;
+                ItemsCBox.Text = "";
 
                 // displays list of items in the New Invoice combo box
                 ItemsCBox.ItemsSource = mainLogic.GetItems();
 
-                /* trying this..........................
-                ItemsCBox2.SelectedIndex = -1;
-                ItemsCBox2.Items.Clear();
-                ItemsCBox2.ItemsSource = null;*/
-
                 // displays list of items in the New Invoice combo box
                 ItemsCBox2.ItemsSource = mainLogic.GetItems();
+
+                // the combo boxes are filled
+                bIsClearingBox = false;
             }
             catch (Exception ex)
             {
@@ -504,8 +530,6 @@ namespace _3280groupProj
                             MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
-
-
 
         /// <summary>
         /// method to clear the main window
@@ -541,9 +565,11 @@ namespace _3280groupProj
                 // set the total cost to zero
                 sum = 0;
 
-                // reload the combo boxes?? -- struggling with the Items window
-                //LoadComboBox();
-                
+                // reload the combo boxes
+                LoadComboBox();
+
+                // an invoice is NOT being edited
+                bIsEditing = false;
             }
             catch (Exception ex)
             {
@@ -552,8 +578,6 @@ namespace _3280groupProj
                                     MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
-
 
         /// <summary>
         /// Handle the error -- for top-level methods

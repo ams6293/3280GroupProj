@@ -16,7 +16,7 @@ namespace _3280groupProj.Main
         /// <summary>
         /// returns a query to get all the items
         /// </summary>
-        /// <returns></returns>
+        /// <returns>a string to get a list of items</returns>
         public string GetItems()
         {
             try
@@ -35,7 +35,7 @@ namespace _3280groupProj.Main
         /// returns a query to get an invoice by the invoice number
         /// </summary>
         /// <param name="invoiceNum"></param>
-        /// <returns></returns>
+        /// <returns>a string to get a specific invoice</returns>
         public string GetInvoice(int invoiceNum)
         {
             try
@@ -54,7 +54,7 @@ namespace _3280groupProj.Main
         /// returns a query to get an invoice total cost by the invoice number
         /// </summary>
         /// <param name="invoiceNum"></param>
-        /// <returns></returns>
+        /// <returns>a string to get the total cost of an invoice</returns>
         public string GetInvoiceCost(int invoiceNum)
         {
             try
@@ -73,7 +73,7 @@ namespace _3280groupProj.Main
         /// Gets all details from LineItems table and ItemDesc table by a specific invoice number
         /// </summary>
         /// <param name="invoiceNum"></param>
-        /// <returns></returns>
+        /// <returns>string to get a list of invoices</returns>
         public string GetAllInvoiceDetails(int invoiceNum)
         {
             try
@@ -92,7 +92,7 @@ namespace _3280groupProj.Main
         /// returns a statement that deletes an invoice with a specific invoice number
         /// </summary>
         /// <param name="invoiceNum"></param>
-        /// <returns></returns>
+        /// <returns>string to delete an invoice</returns>
         public string DeleteInvoice(int invoiceNum)
         {
             try
@@ -112,7 +112,7 @@ namespace _3280groupProj.Main
         /// returns a statement that deletes an invoice from the LineItems table with a specific invoice number
         /// </summary>
         /// <param name="invoiceNum"></param>
-        /// <returns></returns>
+        /// <returns>string to delete LineItem data</returns>
         public string DeleteLineItem(int invoiceNum)
         {
             try
@@ -133,7 +133,7 @@ namespace _3280groupProj.Main
         /// </summary>
         /// <param name="cost"></param>
         /// <param name="invoiceNum"></param>
-        /// <returns></returns>
+        /// <returns>string to update an invoice</returns>
         public string UpdateInvoice(int cost, int invoiceNum)
         {
             try
@@ -154,7 +154,7 @@ namespace _3280groupProj.Main
         /// <param name="invoiceNum"></param>
         /// <param name="lineItemNum"></param>
         /// <param name="itemCode"></param>
-        /// <returns></returns>
+        /// <returns>returns string to insert invoice LineItem data</returns>
         public string InsertLineItems(int invoiceNum, int lineItemNum, string itemCode)
         {
             try
@@ -178,8 +178,9 @@ namespace _3280groupProj.Main
         /// string to insert a new invoice with it's date and total cost into the Invoice table
         /// </summary>
         /// <param name="date"></param>
+        /// <param name="totalCost"></param>
         /// <param name="invoiceNum"></param>
-        /// <returns></returns>
+        /// <returns>returns string to insert a new invoice</returns>
         public string InsertInvoices(string date, int totalCost, string invoiceNum)
         {
             try
@@ -198,9 +199,7 @@ namespace _3280groupProj.Main
         /// <summary>
         /// String to return an invoice number given the date and total cost
         /// </summary>
-        /// <param name="date"></param>
-        /// <param name="invoiceNum"></param>
-        /// <returns></returns>
+        /// <returns>returns string to get invoice number</returns>
         public string GetInvoiceNumber()
         {
             try

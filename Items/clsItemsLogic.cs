@@ -41,5 +41,55 @@ namespace _3280groupProj.Items
             }
             return retList;
         }
+        /// <summary>
+        /// This method allows the user to update the item description and or cost given the correct item code
+        /// </summary>
+        /// <param name="sItemDesc"></param>
+        /// <param name="iCost"></param>
+        /// <param name="sItemCode"></param>
+        public void updateItem(string sItemDesc, int iCost, string sItemCode)
+        {
+            try
+            {
+                db.ExecuteNonQuery(sql.updateItem(sItemDesc, iCost, sItemCode));
+            }
+            catch (Exception a)
+            {
+                throw a;
+            }
+        }
+        /// <summary>
+        /// This method allows the user to enter a new item in the database
+        /// </summary>
+        /// <param name="sDescription"></param>
+        /// <param name="iCost"></param>
+        /// <param name="sItemCode"></param>
+        public void insertNewItem(string sDescription, int iCost, string sItemCode)
+        {
+            try
+            {
+                db.ExecuteNonQuery(sql.insertItem(sDescription, iCost, sItemCode));
+            }
+            catch (Exception b)
+            {
+                throw b;
+            }
+        }
+
+        /// <summary>
+        /// this method allows the user to delete a row from the database by itemcode
+        /// </summary>
+        /// <param name="sItemCode"></param>
+        public void deleteItem(string sItemCode)
+        {
+            try
+            {
+                db.ExecuteNonQuery(sql.deleteItem(sItemCode));
+            }
+            catch (Exception c)
+            {
+                throw c;
+            }
+        }
     }
 }

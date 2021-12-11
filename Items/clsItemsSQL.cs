@@ -23,9 +23,9 @@ namespace _3280groupProj.Items
         /// <param name="sInvoiceNum"></param>
         /// <param name="sItemCode"></param>
         /// <returns></returns>
-        public string selectInvoicebyItem(string sInvoiceNum, string sItemCode)
+        public string selectInvoicebyItem(int iInvoiceNum, string sItemCode)
         {
-            string sSQL = "select distinct " + sInvoiceNum + " from LineItems where ItemCode = " + sItemCode;
+            string sSQL = "select distinct " + iInvoiceNum + " from LineItems where ItemCode = " + sItemCode;
             return sSQL;
         }
         /// <summary>
@@ -35,9 +35,9 @@ namespace _3280groupProj.Items
         /// <param name="sCost"></param>
         /// <param name="sItemCode"></param>
         /// <returns></returns>
-        public string updateItemDescription(string sItemDesc, string sCost, string sItemCode)
+        public string updateItem(string sItemDesc, int iCost, string sItemCode)
         {
-            string sSQL = "Update ItemDesc Set ItemDesc = " + sItemDesc + "Cost = " + sCost + " where ItemCode =" + sItemCode;
+            string sSQL = "Update ItemDesc Set ItemDesc = '" + sItemDesc + "', Cost = '" + iCost + "' where ItemCode = '" + sItemCode + "'";
             return sSQL;
         }
         /// <summary>
@@ -47,9 +47,9 @@ namespace _3280groupProj.Items
         /// <param name="sCost"></param>
         /// <param name="sItemCode"></param>
         /// <returns></returns>
-        public string insertItem(string sItemDesc, string sCost, string sItemCode)
+        public string insertItem(string sItemDesc, int iCost, string sItemCode)
         {
-            string sSQL = "Insert into ItemDesc(ItemCode, ItemDesc, Cost) Values(" + sItemDesc + "," + sCost + "," + sItemCode + ")";
+            string sSQL = "Insert into ItemDesc(ItemCode, ItemDesc, Cost) Values('" + sItemCode + "','" + sItemDesc + "','" + iCost + "')";
             return sSQL;
         }
         /// <summary>
@@ -59,7 +59,7 @@ namespace _3280groupProj.Items
         /// <returns></returns>
         public string deleteItem(string sItemCode)
         {
-            string sSQL = "Delete from ItemDesc Where ItemCode = " + sItemCode;
+            string sSQL = "Delete from ItemDesc Where ItemCode = '" + sItemCode + "'";
             return sSQL;
         }
 
